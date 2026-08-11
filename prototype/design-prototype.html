@@ -1,0 +1,353 @@
+<title>Two-phase alarm — design prototype</title>
+<style>
+  :root {
+    --ink: #06090e;
+    --ink-2: #0a0f16;
+    --line: rgba(140, 170, 200, 0.14);
+    --text-hi: #d8e2ec;
+    --text-mid: #7e8ea0;
+    --text-low: #4a5768;
+    --warm: #f2e8d5;
+    --warm-dim: rgba(242, 232, 213, 0.55);
+    --phone-w: 230px;
+    --phone-h: 476px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  }
+  html, body { background: var(--ink); }
+  body { color: var(--text-mid); margin: 0; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 56px 24px 80px; }
+  header { max-width: 560px; margin-bottom: 56px; }
+  .eyebrow {
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--text-low); margin: 0 0 14px;
+  }
+  h1 {
+    font-size: 26px; font-weight: 400; color: var(--text-hi);
+    margin: 0 0 12px; letter-spacing: -0.01em; text-wrap: balance;
+  }
+  header p.lede { font-size: 15px; line-height: 1.65; margin: 0; color: var(--text-mid); }
+  .stage { display: flex; gap: 36px; flex-wrap: wrap; justify-content: center; }
+  .unit { width: var(--phone-w); }
+  .phone {
+    position: relative; width: var(--phone-w); height: var(--phone-h);
+    border-radius: 34px; overflow: hidden; background: var(--ink-2);
+    border: 1px solid var(--line);
+    box-shadow: 0 30px 60px -30px rgba(0,0,0,0.9);
+  }
+  .phone canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .veil { position: absolute; inset: 0; background: radial-gradient(130% 110% at 50% 42%, rgba(6,9,14,0.28), rgba(6,9,14,0.74)); }
+  .ui { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 26px 20px 22px; box-sizing: border-box; }
+  .screen-tag { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-low); }
+  .clockblock { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .clock {
+    font-size: 58px; font-weight: 200; color: var(--text-hi);
+    font-variant-numeric: tabular-nums; letter-spacing: 0.02em; line-height: 1;
+  }
+  .clock-sub { font-size: 13px; color: var(--text-mid); margin-top: 10px; }
+  .clock-pair { font-size: 12px; color: var(--warm); margin-top: 4px; opacity: 0.8; }
+  .pill-btn {
+    border: 1px solid var(--line); border-radius: 22px; padding: 12px;
+    text-align: center; font-size: 13px; color: var(--text-hi);
+    background: rgba(10, 15, 22, 0.45); backdrop-filter: blur(4px);
+  }
+  .caption { margin-top: 16px; }
+  .caption .eyebrow { margin-bottom: 6px; }
+  .caption p { font-size: 13px; line-height: 1.55; margin: 0; color: var(--text-mid); }
+
+  .setrow { margin-top: 14px; }
+  .setlabel { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-low); margin-bottom: 8px; }
+  .paircard {
+    border-radius: 12px; padding: 10px 12px; margin-bottom: 8px;
+    border: 1px solid rgba(242, 232, 213, 0.45);
+    background: rgba(6, 9, 14, 0.55);
+  }
+  .paircard.off { background: rgba(6,9,14,0.5); border-color: var(--line); }
+  .pairname { font-size: 13px; color: var(--warm); }
+  .paircard.off .pairname { color: var(--text-mid); }
+  .pairdesc { font-size: 11px; color: var(--text-mid); margin-top: 2px; }
+  .paircard.off .pairdesc { color: var(--text-low); }
+  .play { display: inline-block; margin-right: 6px; color: var(--warm); font-size: 10px; }
+  .paircard.off .play { color: var(--text-low); }
+  .days { display: flex; gap: 5px; }
+  .day {
+    width: 24px; height: 24px; border-radius: 50%; font-size: 11px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line); color: var(--text-low);
+    background: transparent; cursor: pointer; padding: 0;
+    font-family: inherit; transition: all 120ms ease;
+  }
+  .day.on { background: rgba(242, 232, 213, 0.14); border-color: rgba(242, 232, 213, 0.6); color: var(--warm); }
+  .day:focus-visible { outline: 2px solid var(--warm); outline-offset: 2px; }
+  .gaps { display: flex; gap: 6px; }
+  .gap {
+    font-size: 12px; padding: 5px 14px; border-radius: 14px;
+    border: 1px solid var(--line); color: var(--text-low);
+  }
+  .gap.on { background: rgba(242, 232, 213, 0.14); border-color: rgba(242, 232, 213, 0.6); color: var(--warm); }
+
+  .wake-btn {
+    border-radius: 22px; padding: 13px; text-align: center;
+    font-size: 14px; font-weight: 500; color: #26221a;
+    background: var(--warm); border: none;
+  }
+  .wake-state { font-size: 12px; color: var(--warm-dim); margin-top: 4px; }
+
+  .scrub { margin-top: 18px; }
+  .scrub-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .scrub-head .setlabel { margin: 0; }
+  .scrub-val { font-size: 12px; color: var(--text-hi); font-variant-numeric: tabular-nums; }
+  input[type="range"] {
+    -webkit-appearance: none; appearance: none; width: 100%; height: 24px;
+    background: transparent; margin: 0; cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 3px; border-radius: 2px;
+    background: linear-gradient(to right, rgba(90,110,180,0.5), rgba(120,200,190,0.6), rgba(220,170,200,0.7), rgba(242,232,213,0.9));
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--warm); margin-top: -6.5px; border: none;
+  }
+  input[type="range"]::-moz-range-track {
+    height: 3px; border-radius: 2px;
+    background: linear-gradient(to right, rgba(90,110,180,0.5), rgba(120,200,190,0.6), rgba(220,170,200,0.7), rgba(242,232,213,0.9));
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 16px; height: 16px; border-radius: 50%; background: var(--warm); border: none;
+  }
+  input[type="range"]:focus-visible { outline: 2px solid var(--warm); outline-offset: 4px; border-radius: 4px; }
+  .curve { margin-top: 10px; }
+  .curve svg { display: block; width: 100%; height: 44px; }
+  .curve-note { font-size: 11px; color: var(--text-low); margin-top: 4px; }
+
+  footer { margin-top: 64px; border-top: 1px solid var(--line); padding-top: 20px; max-width: 560px; }
+  footer p { font-size: 13px; line-height: 1.6; margin: 0; color: var(--text-low); }
+  @media (prefers-reduced-motion: reduce) { .phone canvas { opacity: 0.9; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Design prototype · 04</p>
+    <h1>A spectrum under a dark ocean</h1>
+    <p class="lede">The screen is the surface and you are looking straight down into the water. One prismatic sheen, hues always slowly shifting, drifts about the plane on its own. Depth is the z toward you: asleep far below at night, rising toward you during the wake, fully visible a few feet down by day. Where it drifts is always chance. The interface speaks only in warm white — the water owns every other color.</p>
+  </header>
+
+  <div class="stage">
+    <div class="unit">
+      <div class="phone">
+        <canvas id="c1"></canvas>
+        <div class="veil"></div>
+        <div class="ui">
+          <span class="screen-tag">Tonight</span>
+          <div class="clockblock">
+            <div class="clock">10:42</div>
+            <div class="clock-sub">wake at 6:10</div>
+            <div class="clock-pair">Dawn · gentle, then firm</div>
+          </div>
+          <div class="pill-btn">Wind down</div>
+        </div>
+      </div>
+      <div class="caption">
+        <p class="eyebrow">Night · deep</p>
+        <p>The spectrum sleeps near the floor — presence, not display. Red-shifts further in blackout mode.</p>
+      </div>
+    </div>
+
+    <div class="unit">
+      <div class="phone">
+        <canvas id="c2"></canvas>
+        <div class="veil"></div>
+        <div class="ui">
+          <span class="screen-tag">Alarm</span>
+          <div style="text-align:center; margin: 14px 0 2px;">
+            <span class="clock" style="font-size: 40px;">6:10</span>
+          </div>
+          <div class="setrow">
+            <div class="paircard">
+              <div class="pairname"><span class="play">&#9654;</span>Dawn</div>
+              <div class="pairdesc">warm strings, then chimes</div>
+            </div>
+            <div class="paircard off">
+              <div class="pairname"><span class="play">&#9654;</span>Fountain</div>
+              <div class="pairdesc">water, then bright bells</div>
+            </div>
+          </div>
+          <div class="setrow">
+            <div class="setlabel">Days</div>
+            <div class="days" id="days"></div>
+          </div>
+          <div class="setrow">
+            <div class="setlabel">Gap between phases</div>
+            <div class="gaps">
+              <span class="gap">3</span><span class="gap on">6</span><span class="gap">9</span>
+            </div>
+          </div>
+          <div class="setrow" style="margin-top:auto;">
+            <span style="font-size:11px; color: var(--text-low);">Sunrise lamp · on</span>
+          </div>
+        </div>
+      </div>
+      <div class="caption">
+        <p class="eyebrow">Day · a few feet down</p>
+        <p>The daytime screen: spectrum fully visible below the controls. Sound pairs, days (tappable here — try them), gap, lamp. Nothing else earns a control.</p>
+      </div>
+    </div>
+
+    <div class="unit">
+      <div class="phone">
+        <canvas id="c3"></canvas>
+        <div class="veil" id="wakeveil"></div>
+        <div class="ui">
+          <span class="screen-tag">Wake</span>
+          <div class="clockblock">
+            <div class="clock" id="waketime">6:16</div>
+            <div class="clock-sub" style="color: var(--gold); opacity: 0.85;">Dawn · phase two</div>
+            <div class="wake-state" id="wakestate">rising</div>
+          </div>
+          <button class="wake-btn">I'm up</button>
+        </div>
+      </div>
+      <div class="caption">
+        <p class="eyebrow">Wake · rising</p>
+        <p>Scrub through the wake. The spectrum rises toward you with the sound for about four minutes, then holds — insistent, never punishing. Where it drifts on the plane is chance.</p>
+      </div>
+      <div class="scrub">
+        <div class="scrub-head">
+          <div class="setlabel">Minutes into phase two</div>
+          <div class="scrub-val" id="scrubval">0:30</div>
+        </div>
+        <input type="range" id="scrubber" min="0" max="100" value="12" step="1" aria-label="Minutes into phase two" />
+        <div class="curve">
+          <svg viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M 2 36 C 40 36, 60 6, 100 5 L 198 5" fill="none" stroke="rgba(242,232,213,0.35)" stroke-width="1.5"/>
+            <circle id="curvedot" cx="14" cy="32" r="3" fill="#f2e8d5"/>
+          </svg>
+          <div class="curve-note">escalate, then plateau — the curve is the whole sound-design brief</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Committed to a single dark theme by design. The sheen is generative — six slow radial blooms whose hues drift independently around the full spectrum. Motion on the x/y plane is constant and undirected; the depth parameter moves only the fictitious z, driving brightness, saturation, and apparent size, and it changes only when the time-of-day state changes. No water is simulated; the feeling is carried by depth, slowness, and light. Selected controls speak in warm white only, so the spectrum is the sole source of color in the app.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function makeScene(id, seedOffset) {
+    var canvas = document.getElementById(id);
+    var ctx = canvas.getContext('2d');
+    var blobs = [];
+    for (var i = 0; i < 6; i++) {
+      blobs.push({
+        cx: 0.12 + (0.76 * ((i * 0.37 + seedOffset) % 1)),
+        cy: 0.18 + 0.68 * ((i * 0.53 + seedOffset * 0.7) % 1),
+        r: 0.3 + 0.28 * ((i * 0.71) % 1),
+        hue0: (i * 60 + seedOffset * 360) % 360,
+        hspd: 0.0018 + 0.0016 * ((i * 0.43) % 1),
+        spx: 0.6 + ((i * 0.29) % 1),
+        spy: 0.4 + ((i * 0.41) % 1),
+        ph: i * 1.7 + seedOffset * 6
+      });
+    }
+    function size() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var w = canvas.clientWidth, h = canvas.clientHeight;
+      if (canvas.width !== w * dpr) { canvas.width = w * dpr; canvas.height = h * dpr; }
+    }
+    return {
+      draw: function (t, intensity) {
+        size();
+        var W = canvas.width, H = canvas.height;
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = '#06090e';
+        ctx.fillRect(0, 0, W, H);
+        ctx.globalCompositeOperation = 'lighter';
+        var sat = 40 + 45 * intensity;
+        var lig = 30 + 28 * intensity;
+        var alpha = 0.07 + 0.34 * intensity;
+        for (var i = 0; i < blobs.length; i++) {
+          var b = blobs[i];
+          var x = (b.cx + 0.10 * Math.sin(t * 0.00013 * b.spx + b.ph)) * W;
+          var y = (b.cy + 0.07 * Math.cos(t * 0.00011 * b.spy + b.ph * 1.3)) * H;
+          var r = b.r * W * (0.85 + 0.55 * intensity);
+          var hue = (b.hue0 + t * b.hspd) % 360;
+          var core = 'hsla(' + hue.toFixed(0) + ',' + sat.toFixed(0) + '%,' + lig.toFixed(0) + '%,' + alpha.toFixed(3) + ')';
+          var edge = 'hsla(' + hue.toFixed(0) + ',' + sat.toFixed(0) + '%,' + lig.toFixed(0) + '%,0)';
+          var g = ctx.createRadialGradient(x, y, 0, x, y, r);
+          g.addColorStop(0, core);
+          g.addColorStop(1, edge);
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    };
+  }
+
+  var s1 = makeScene('c1', 0.0);
+  var s2 = makeScene('c2', 0.4);
+  var s3 = makeScene('c3', 0.8);
+
+  var scrubber = document.getElementById('scrubber');
+  var scrubval = document.getElementById('scrubval');
+  var waketime = document.getElementById('waketime');
+  var wakestate = document.getElementById('wakestate');
+  var curvedot = document.getElementById('curvedot');
+  var wakeveil = document.getElementById('wakeveil');
+
+  var RAMP_END = 4;
+  var MAX_MIN = 8;
+
+  function wakeIntensity(mins) {
+    var t = Math.min(mins / RAMP_END, 1);
+    var s = t * t * (3 - 2 * t);
+    return 0.14 + 0.86 * s;
+  }
+
+  function updateWakeUI() {
+    var mins = (scrubber.value / 100) * MAX_MIN;
+    var whole = Math.floor(mins), sec = Math.round((mins - whole) * 60);
+    if (sec === 60) { whole += 1; sec = 0; }
+    scrubval.textContent = whole + ':' + (sec < 10 ? '0' : '') + sec;
+    var total = 16 + whole;
+    waketime.textContent = '6:' + (total < 10 ? '0' : '') + total;
+    wakestate.textContent = mins < 0.5 ? 'gentle' : (mins < RAMP_END ? 'rising' : 'full');
+    var I = wakeIntensity(mins);
+    curvedot.setAttribute('cx', (2 + 196 * (mins / MAX_MIN)).toFixed(1));
+    curvedot.setAttribute('cy', (36 - 31 * ((I - 0.14) / 0.86)).toFixed(1));
+    wakeveil.style.opacity = (1 - 0.45 * I).toFixed(2);
+    return I;
+  }
+
+  scrubber.addEventListener('input', updateWakeUI);
+  var wakeI = updateWakeUI();
+  scrubber.addEventListener('input', function () { wakeI = updateWakeUI(); });
+
+  var daysEl = document.getElementById('days');
+  var labels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+  for (var d = 0; d < 7; d++) {
+    var btn = document.createElement('button');
+    btn.className = 'day' + (d < 5 ? ' on' : '');
+    btn.textContent = labels[d];
+    btn.setAttribute('aria-pressed', d < 5 ? 'true' : 'false');
+    btn.addEventListener('click', function () {
+      var on = this.classList.toggle('on');
+      this.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    daysEl.appendChild(btn);
+  }
+
+  function frame(t) {
+    s1.draw(t, 0.10);
+    s2.draw(t, 0.85);
+    s3.draw(t, wakeI);
+    if (!reduced) requestAnimationFrame(frame);
+  }
+  if (reduced) { frame(8000); } else { requestAnimationFrame(frame); }
+})();
+</script>
