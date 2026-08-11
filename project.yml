@@ -1,0 +1,32 @@
+name: Fathom
+options:
+  bundleIdPrefix: com.shanehaynes
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    CODE_SIGN_STYLE: Automatic
+targets:
+  Fathom:
+    type: application
+    platform: iOS
+    sources:
+      - path: Fathom
+    info:
+      path: Fathom/Info.plist
+      properties:
+        CFBundleDisplayName: Fathom
+        NSAlarmKitUsageDescription: Fathom schedules your two-phase wake alarms so they fire even when the app is closed.
+        UIBackgroundModes: [audio]
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UIUserInterfaceStyle: Dark
+        ITSAppUsesNonExemptEncryption: false
+        UILaunchScreen: {}
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.shanehaynes.fathom
+        INFOPLIST_KEY_UIStatusBarStyle: UIStatusBarStyleLightContent

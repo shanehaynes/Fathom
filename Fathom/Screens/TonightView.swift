@@ -1,0 +1,111 @@
+import SwiftUI
+import UIKit
+import Combine
+
+// §4 Tonight — the resting state. Near-black, spectrum asleep at night depth,
+// large thin clock numerals, next-wake line, and one action: Wind down.
+// Nothing here rewards opening the app during the day (principle 4).
+
+struct TonightView: View {
+    @Environment(AlarmStore.self) private var store
+    @State private var windingDown = false
+    @State private var showSettings = false
+    @State private var isCharging = false
+
+    var body: some View {
+        ZStack {
+            OceanScene(
+                depth: Depth.night,
+                mode: store.settings.redShift && store.settings.bedsideMode ? .redShift : .normal,
+                slowUpdates: store.settings.bedsideMode && isCharging,
+                pixelDrift: store.settings.bedsideMode && isCharging
+            )
+
+            VStack {
+                HStack {
+                    Text("Tonight").tagStyle()
+                    Spacer()
+                    Button("Alarm") { showSettings = true }
+                        .font(.system(size: 12))
+                        .foregroundStyle(Theme.textLow)
+                }
+
+                Spacer()
+
+                TimelineView(.periodic(from: .now, by: 1)) { timeline in
+                    Text(timeline.date, format: .dateTime.hour(.defaultDigits(amPM: .omitted)).minute())
+                        .font(.clock(72))
+                        .foregroundStyle(Theme.textHi)
+                }
+                if let next = store.nextWake {
+                    Text("wake at \(next.alarm.timeText)")
+                        .font(.system(size: 14))
+                        .foregroundStyle(Theme.textMid)
+                        .padding(.top, 10)
+                    Text("\(next.alarm.pair.name) · gentle, then firm")
+                        .font(.system(size: 13))
+                        .foregroundStyle(Theme.warm.opacity(0.8))
+                        .padding(.top, 2)
+                } else {
+                    Text("no alarm set")
+                        .font(.system(size: 14))
+                        .foregroundStyle(Theme.textMid)
+                        .padding(.top, 10)
+                }
+
+                Spacer()
+
+                Button {
+                    if windingDown {
+                        WakeAudio.shared.stop()
+                        windingDown = false
+                    } else {
+                        let pair = store.nextWake?.alarm.pair ?? .dawn
+                        WakeAudio.shared.startWindDown(pair: pair)
+                        windingDown = true
+                    }
+                } label: {
+                    Text(windingDown ? "Winding down…" : "Wind down")
+                        .font(.system(size: 15))
+                        .foregroundStyle(windingDown ? Theme.warm : Theme.textHi)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(Theme.ink2.opacity(0.45), in: Capsule())
+                        .overlay(Capsule().stroke(windingDown ? Theme.warm.opacity(0.6) : Theme.line, lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(24)
+
+            // Bedside auto-dim below system brightness (§4 OLED mitigations).
+            if store.settings.bedsideMode && isCharging {
+                Color.black.opacity(0.25)
+                    .ignoresSafeArea()
+                    .allowsHitTesting(false)
+            }
+        }
+        .fullScreenCover(isPresented: $showSettings) {
+            AlarmSettingsView()
+        }
+        .onAppear { updateCharging() }
+        .onReceive(NotificationCenter.default.publisher(for: UIDevice.batteryStateDidChangeNotification)) { _ in
+            updateCharging()
+        }
+        // Bedside "stay on while charging": idle timer disabled only while
+        // plugged in and on this screen (§4).
+        .onChange(of: chargingAndBedside, initial: true) { _, on in
+            UIApplication.shared.isIdleTimerDisabled = on
+        }
+        .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
+    }
+
+    private var chargingAndBedside: Bool {
+        store.settings.bedsideMode && isCharging
+    }
+
+    private func updateCharging() {
+        UIDevice.current.isBatteryMonitoringEnabled = true
+        let state = UIDevice.current.batteryState
+        isCharging = state == .charging || state == .full
+    }
+}

@@ -1,0 +1,520 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		00E6430A28A5429FC39F5A24 /* WakeAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA41CED8222668D6A98C703 /* WakeAudio.swift */; };
+		0EEF7D46AA57E66E549A7457 /* AlarmEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC1DA17EB705624A6BFA37B /* AlarmEngine.swift */; };
+		257592B296A3185BB288DAF8 /* dawn-continuous.caf in Resources */ = {isa = PBXBuildFile; fileRef = 798D6904AE10B27D90EE3C7B /* dawn-continuous.caf */; };
+		26ED8708CDDCE2FE287BFAF2 /* dawn-c.caf in Resources */ = {isa = PBXBuildFile; fileRef = 7C08426EC39145AA7BD1634D /* dawn-c.caf */; };
+		3AE549024BD911C873568D7C /* WakeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5429A232B8DFEFD1A24EEEC8 /* WakeView.swift */; };
+		475405CE188F8D0955E7F757 /* dawn-continuous.m4a in Resources */ = {isa = PBXBuildFile; fileRef = BDD99CF759E0ACBE1B669ADE /* dawn-continuous.m4a */; };
+		4C764D73ADF960237BFFF592 /* dawn-e.caf in Resources */ = {isa = PBXBuildFile; fileRef = E0112B8BFC4D1FB4B4EDE758 /* dawn-e.caf */; };
+		557C34838BA19071439084B7 /* fountain-preview.caf in Resources */ = {isa = PBXBuildFile; fileRef = E5CA4883F8A4D22CA0869C72 /* fountain-preview.caf */; };
+		55D09CD778A6F259A1F9D283 /* TonightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D152CE360FB46743A59A8990 /* TonightView.swift */; };
+		5D5B8268953D47D257249999 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3C6E1A40E573A61F7E81C8 /* Models.swift */; };
+		5F00AC5320F20EC173BF9B65 /* AlarmSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D717591654126DDEF2EA97D /* AlarmSettingsView.swift */; };
+		62C070D0E35389950A8ECA5D /* fountain-continuous.m4a in Resources */ = {isa = PBXBuildFile; fileRef = A961DF2F2033E66DF132E3C6 /* fountain-continuous.m4a */; };
+		6593EA91A09C734AC21DF6D5 /* fountain-sleep.caf in Resources */ = {isa = PBXBuildFile; fileRef = 916498081B0BD6927D88FED6 /* fountain-sleep.caf */; };
+		6AAD7F74F22986E267939923 /* fountain-sleep.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5200636B7E44C78C9BF0CDAB /* fountain-sleep.m4a */; };
+		70EF4FB835B04058A9FD97E4 /* FathomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C90C6B8600E922850878FE /* FathomApp.swift */; };
+		741305A490FDE7562B9FED7B /* fountain-d.caf in Resources */ = {isa = PBXBuildFile; fileRef = 85AF5AE61EBC2ECCE01A46B8 /* fountain-d.caf */; };
+		74E644FDAA6B8B8E3DE93594 /* fountain-phase1.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9440253E56B46752D70FAF03 /* fountain-phase1.caf */; };
+		7552C880BA4DCDDE75CF88A5 /* dawn-a.caf in Resources */ = {isa = PBXBuildFile; fileRef = D593B81E81DAE72EDB7F261A /* dawn-a.caf */; };
+		766C77E7609EDBCF35A322ED /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FAFFBB08BE92D1C64D838 /* Theme.swift */; };
+		8DE294D12F104FAADBC671B0 /* dawn-d.caf in Resources */ = {isa = PBXBuildFile; fileRef = FECB636142659848BD6D18B6 /* dawn-d.caf */; };
+		92924164E2305063A9134623 /* fountain-a.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8D3F55D641B62D3C28AA5AA7 /* fountain-a.caf */; };
+		99EDC25816AE22C61DF79BB5 /* dawn-sleep.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 990CDD997C896CE109B9080B /* dawn-sleep.m4a */; };
+		AC67EE1D72E821275FBCC8E3 /* fountain-c.caf in Resources */ = {isa = PBXBuildFile; fileRef = DCE0E2A308224151BB0DDB6A /* fountain-c.caf */; };
+		B017F1F7D634FE469AB0C5C5 /* dawn-preview.caf in Resources */ = {isa = PBXBuildFile; fileRef = 4102A889913279616A1DDEFD /* dawn-preview.caf */; };
+		B7266DCF8602309F505DAD74 /* dawn-sleep.caf in Resources */ = {isa = PBXBuildFile; fileRef = 4E43155EF003B6DC859FBBC1 /* dawn-sleep.caf */; };
+		B900FC9EBBBAC53A7855AF93 /* dawn-b.caf in Resources */ = {isa = PBXBuildFile; fileRef = AB077906CF5F2EDD769BC4D2 /* dawn-b.caf */; };
+		C274BECD3C98AEEB29ACDEB7 /* dawn-preview.m4a in Resources */ = {isa = PBXBuildFile; fileRef = DD467BDF9FF84EC98FE51E80 /* dawn-preview.m4a */; };
+		C448C9459103CE600E4BC222 /* fountain-preview.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 10FFAB409EF33E8EA6223E6F /* fountain-preview.m4a */; };
+		CB27B5099AFA97BFDB287F0A /* AlarmStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817F20BFA683C49646F740DD /* AlarmStore.swift */; };
+		D1053FCF9F6D4ADB21370A17 /* fountain-continuous.caf in Resources */ = {isa = PBXBuildFile; fileRef = D0745E1B38563714AB6C663B /* fountain-continuous.caf */; };
+		D955E04E905731A853622685 /* fountain-b.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9AE9E1A788B89CC655D41E32 /* fountain-b.caf */; };
+		E42704F9B4F1942F780ECEAC /* fountain-e.caf in Resources */ = {isa = PBXBuildFile; fileRef = 0802BDE95D28174A40565C20 /* fountain-e.caf */; };
+		F009967672880F60BF8D92D3 /* BackupChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CDF54A22E74C0D1F15BD87 /* BackupChain.swift */; };
+		F5165351DD5F6EAB0A8CEA48 /* dawn-phase1.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3725A17C113131EA7CE18BD6 /* dawn-phase1.caf */; };
+		F70BADE910120F0E39AA4B96 /* OceanScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B1867ACC2F41EF070B55D3 /* OceanScene.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		001FAFFBB08BE92D1C64D838 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		0802BDE95D28174A40565C20 /* fountain-e.caf */ = {isa = PBXFileReference; path = "fountain-e.caf"; sourceTree = "<group>"; };
+		10FFAB409EF33E8EA6223E6F /* fountain-preview.m4a */ = {isa = PBXFileReference; path = "fountain-preview.m4a"; sourceTree = "<group>"; };
+		3725A17C113131EA7CE18BD6 /* dawn-phase1.caf */ = {isa = PBXFileReference; path = "dawn-phase1.caf"; sourceTree = "<group>"; };
+		3D717591654126DDEF2EA97D /* AlarmSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSettingsView.swift; sourceTree = "<group>"; };
+		4102A889913279616A1DDEFD /* dawn-preview.caf */ = {isa = PBXFileReference; path = "dawn-preview.caf"; sourceTree = "<group>"; };
+		4E43155EF003B6DC859FBBC1 /* dawn-sleep.caf */ = {isa = PBXFileReference; path = "dawn-sleep.caf"; sourceTree = "<group>"; };
+		5200636B7E44C78C9BF0CDAB /* fountain-sleep.m4a */ = {isa = PBXFileReference; path = "fountain-sleep.m4a"; sourceTree = "<group>"; };
+		5429A232B8DFEFD1A24EEEC8 /* WakeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WakeView.swift; sourceTree = "<group>"; };
+		54CDF54A22E74C0D1F15BD87 /* BackupChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupChain.swift; sourceTree = "<group>"; };
+		64B1867ACC2F41EF070B55D3 /* OceanScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OceanScene.swift; sourceTree = "<group>"; };
+		798D6904AE10B27D90EE3C7B /* dawn-continuous.caf */ = {isa = PBXFileReference; path = "dawn-continuous.caf"; sourceTree = "<group>"; };
+		7C08426EC39145AA7BD1634D /* dawn-c.caf */ = {isa = PBXFileReference; path = "dawn-c.caf"; sourceTree = "<group>"; };
+		817F20BFA683C49646F740DD /* AlarmStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmStore.swift; sourceTree = "<group>"; };
+		85AF5AE61EBC2ECCE01A46B8 /* fountain-d.caf */ = {isa = PBXFileReference; path = "fountain-d.caf"; sourceTree = "<group>"; };
+		8ABEC91B120D4F6001235AE5 /* Fathom.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Fathom.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D3F55D641B62D3C28AA5AA7 /* fountain-a.caf */ = {isa = PBXFileReference; path = "fountain-a.caf"; sourceTree = "<group>"; };
+		916498081B0BD6927D88FED6 /* fountain-sleep.caf */ = {isa = PBXFileReference; path = "fountain-sleep.caf"; sourceTree = "<group>"; };
+		9440253E56B46752D70FAF03 /* fountain-phase1.caf */ = {isa = PBXFileReference; path = "fountain-phase1.caf"; sourceTree = "<group>"; };
+		990CDD997C896CE109B9080B /* dawn-sleep.m4a */ = {isa = PBXFileReference; path = "dawn-sleep.m4a"; sourceTree = "<group>"; };
+		9AE9E1A788B89CC655D41E32 /* fountain-b.caf */ = {isa = PBXFileReference; path = "fountain-b.caf"; sourceTree = "<group>"; };
+		9EC1DA17EB705624A6BFA37B /* AlarmEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmEngine.swift; sourceTree = "<group>"; };
+		A2C90C6B8600E922850878FE /* FathomApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FathomApp.swift; sourceTree = "<group>"; };
+		A961DF2F2033E66DF132E3C6 /* fountain-continuous.m4a */ = {isa = PBXFileReference; path = "fountain-continuous.m4a"; sourceTree = "<group>"; };
+		AB077906CF5F2EDD769BC4D2 /* dawn-b.caf */ = {isa = PBXFileReference; path = "dawn-b.caf"; sourceTree = "<group>"; };
+		BAA41CED8222668D6A98C703 /* WakeAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WakeAudio.swift; sourceTree = "<group>"; };
+		BDD99CF759E0ACBE1B669ADE /* dawn-continuous.m4a */ = {isa = PBXFileReference; path = "dawn-continuous.m4a"; sourceTree = "<group>"; };
+		C1A3EB0D5F1C29053400797F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D0745E1B38563714AB6C663B /* fountain-continuous.caf */ = {isa = PBXFileReference; path = "fountain-continuous.caf"; sourceTree = "<group>"; };
+		D152CE360FB46743A59A8990 /* TonightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TonightView.swift; sourceTree = "<group>"; };
+		D593B81E81DAE72EDB7F261A /* dawn-a.caf */ = {isa = PBXFileReference; path = "dawn-a.caf"; sourceTree = "<group>"; };
+		DCE0E2A308224151BB0DDB6A /* fountain-c.caf */ = {isa = PBXFileReference; path = "fountain-c.caf"; sourceTree = "<group>"; };
+		DD467BDF9FF84EC98FE51E80 /* dawn-preview.m4a */ = {isa = PBXFileReference; path = "dawn-preview.m4a"; sourceTree = "<group>"; };
+		E0112B8BFC4D1FB4B4EDE758 /* dawn-e.caf */ = {isa = PBXFileReference; path = "dawn-e.caf"; sourceTree = "<group>"; };
+		E5CA4883F8A4D22CA0869C72 /* fountain-preview.caf */ = {isa = PBXFileReference; path = "fountain-preview.caf"; sourceTree = "<group>"; };
+		EC3C6E1A40E573A61F7E81C8 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		FECB636142659848BD6D18B6 /* dawn-d.caf */ = {isa = PBXFileReference; path = "dawn-d.caf"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1AC4814A777B84C945D27EA2 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A2C90C6B8600E922850878FE /* FathomApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		3489981FAA3B5B29411A733F /* Fathom */ = {
+			isa = PBXGroup;
+			children = (
+				C1A3EB0D5F1C29053400797F /* Info.plist */,
+				DBF12A8A6F6812E03F76B35B /* Alarms */,
+				1AC4814A777B84C945D27EA2 /* App */,
+				DA6085F2C15C00AA51087CFE /* Audio */,
+				5BDD4196D10F9E4162261B0D /* Models */,
+				D7D02B5405443C110ABAA180 /* Resources */,
+				502D92DA4C9A3D905208CA3F /* Scene */,
+				F4832A2251663FBB2A22C497 /* Screens */,
+				6CEAE5CCC05E61C46655D69C /* Store */,
+				CEFD03576BCA886866E35DFB /* Theme */,
+			);
+			path = Fathom;
+			sourceTree = "<group>";
+		};
+		49F25A6610FE3CC302EC82DF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8ABEC91B120D4F6001235AE5 /* Fathom.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4A2ACF1F77124005B806514C /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				D593B81E81DAE72EDB7F261A /* dawn-a.caf */,
+				AB077906CF5F2EDD769BC4D2 /* dawn-b.caf */,
+				7C08426EC39145AA7BD1634D /* dawn-c.caf */,
+				798D6904AE10B27D90EE3C7B /* dawn-continuous.caf */,
+				BDD99CF759E0ACBE1B669ADE /* dawn-continuous.m4a */,
+				FECB636142659848BD6D18B6 /* dawn-d.caf */,
+				E0112B8BFC4D1FB4B4EDE758 /* dawn-e.caf */,
+				3725A17C113131EA7CE18BD6 /* dawn-phase1.caf */,
+				4102A889913279616A1DDEFD /* dawn-preview.caf */,
+				DD467BDF9FF84EC98FE51E80 /* dawn-preview.m4a */,
+				4E43155EF003B6DC859FBBC1 /* dawn-sleep.caf */,
+				990CDD997C896CE109B9080B /* dawn-sleep.m4a */,
+				8D3F55D641B62D3C28AA5AA7 /* fountain-a.caf */,
+				9AE9E1A788B89CC655D41E32 /* fountain-b.caf */,
+				DCE0E2A308224151BB0DDB6A /* fountain-c.caf */,
+				D0745E1B38563714AB6C663B /* fountain-continuous.caf */,
+				A961DF2F2033E66DF132E3C6 /* fountain-continuous.m4a */,
+				85AF5AE61EBC2ECCE01A46B8 /* fountain-d.caf */,
+				0802BDE95D28174A40565C20 /* fountain-e.caf */,
+				9440253E56B46752D70FAF03 /* fountain-phase1.caf */,
+				E5CA4883F8A4D22CA0869C72 /* fountain-preview.caf */,
+				10FFAB409EF33E8EA6223E6F /* fountain-preview.m4a */,
+				916498081B0BD6927D88FED6 /* fountain-sleep.caf */,
+				5200636B7E44C78C9BF0CDAB /* fountain-sleep.m4a */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
+		502D92DA4C9A3D905208CA3F /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				64B1867ACC2F41EF070B55D3 /* OceanScene.swift */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		5BDD4196D10F9E4162261B0D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EC3C6E1A40E573A61F7E81C8 /* Models.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		6CEAE5CCC05E61C46655D69C /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				817F20BFA683C49646F740DD /* AlarmStore.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		BD63281907BFE427A2AE2366 = {
+			isa = PBXGroup;
+			children = (
+				3489981FAA3B5B29411A733F /* Fathom */,
+				49F25A6610FE3CC302EC82DF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CEFD03576BCA886866E35DFB /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				001FAFFBB08BE92D1C64D838 /* Theme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		D7D02B5405443C110ABAA180 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4A2ACF1F77124005B806514C /* Sounds */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		DA6085F2C15C00AA51087CFE /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				BAA41CED8222668D6A98C703 /* WakeAudio.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		DBF12A8A6F6812E03F76B35B /* Alarms */ = {
+			isa = PBXGroup;
+			children = (
+				9EC1DA17EB705624A6BFA37B /* AlarmEngine.swift */,
+				54CDF54A22E74C0D1F15BD87 /* BackupChain.swift */,
+			);
+			path = Alarms;
+			sourceTree = "<group>";
+		};
+		F4832A2251663FBB2A22C497 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				3D717591654126DDEF2EA97D /* AlarmSettingsView.swift */,
+				D152CE360FB46743A59A8990 /* TonightView.swift */,
+				5429A232B8DFEFD1A24EEEC8 /* WakeView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B217A4083BB788E448CC4535 /* Fathom */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 473022B3EB867CD3D4347D40 /* Build configuration list for PBXNativeTarget "Fathom" */;
+			buildPhases = (
+				9F450E3B4F9F0A8B25C33317 /* Sources */,
+				55E5048A2075C44C3D598EF8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Fathom;
+			packageProductDependencies = (
+			);
+			productName = Fathom;
+			productReference = 8ABEC91B120D4F6001235AE5 /* Fathom.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		677CBAC0065F331D162F97F2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					B217A4083BB788E448CC4535 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 1A23DB94EE140EE8ACDEA09A /* Build configuration list for PBXProject "Fathom" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = BD63281907BFE427A2AE2366;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 49F25A6610FE3CC302EC82DF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B217A4083BB788E448CC4535 /* Fathom */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		55E5048A2075C44C3D598EF8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7552C880BA4DCDDE75CF88A5 /* dawn-a.caf in Resources */,
+				B900FC9EBBBAC53A7855AF93 /* dawn-b.caf in Resources */,
+				26ED8708CDDCE2FE287BFAF2 /* dawn-c.caf in Resources */,
+				257592B296A3185BB288DAF8 /* dawn-continuous.caf in Resources */,
+				475405CE188F8D0955E7F757 /* dawn-continuous.m4a in Resources */,
+				8DE294D12F104FAADBC671B0 /* dawn-d.caf in Resources */,
+				4C764D73ADF960237BFFF592 /* dawn-e.caf in Resources */,
+				F5165351DD5F6EAB0A8CEA48 /* dawn-phase1.caf in Resources */,
+				B017F1F7D634FE469AB0C5C5 /* dawn-preview.caf in Resources */,
+				C274BECD3C98AEEB29ACDEB7 /* dawn-preview.m4a in Resources */,
+				B7266DCF8602309F505DAD74 /* dawn-sleep.caf in Resources */,
+				99EDC25816AE22C61DF79BB5 /* dawn-sleep.m4a in Resources */,
+				92924164E2305063A9134623 /* fountain-a.caf in Resources */,
+				D955E04E905731A853622685 /* fountain-b.caf in Resources */,
+				AC67EE1D72E821275FBCC8E3 /* fountain-c.caf in Resources */,
+				D1053FCF9F6D4ADB21370A17 /* fountain-continuous.caf in Resources */,
+				62C070D0E35389950A8ECA5D /* fountain-continuous.m4a in Resources */,
+				741305A490FDE7562B9FED7B /* fountain-d.caf in Resources */,
+				E42704F9B4F1942F780ECEAC /* fountain-e.caf in Resources */,
+				74E644FDAA6B8B8E3DE93594 /* fountain-phase1.caf in Resources */,
+				557C34838BA19071439084B7 /* fountain-preview.caf in Resources */,
+				C448C9459103CE600E4BC222 /* fountain-preview.m4a in Resources */,
+				6593EA91A09C734AC21DF6D5 /* fountain-sleep.caf in Resources */,
+				6AAD7F74F22986E267939923 /* fountain-sleep.m4a in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9F450E3B4F9F0A8B25C33317 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0EEF7D46AA57E66E549A7457 /* AlarmEngine.swift in Sources */,
+				5F00AC5320F20EC173BF9B65 /* AlarmSettingsView.swift in Sources */,
+				CB27B5099AFA97BFDB287F0A /* AlarmStore.swift in Sources */,
+				F009967672880F60BF8D92D3 /* BackupChain.swift in Sources */,
+				70EF4FB835B04058A9FD97E4 /* FathomApp.swift in Sources */,
+				5D5B8268953D47D257249999 /* Models.swift in Sources */,
+				F70BADE910120F0E39AA4B96 /* OceanScene.swift in Sources */,
+				766C77E7609EDBCF35A322ED /* Theme.swift in Sources */,
+				55D09CD778A6F259A1F9D283 /* TonightView.swift in Sources */,
+				00E6430A28A5429FC39F5A24 /* WakeAudio.swift in Sources */,
+				3AE549024BD911C873568D7C /* WakeView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		136179C2F4213A53887E7564 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Fathom/Info.plist;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.shanehaynes.fathom;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9BB3C1FCA9EB4D9543D1C91F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		B102FD4DAC55EC780A08CE66 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		E5D49AE37F0281AA80EA05A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Fathom/Info.plist;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.shanehaynes.fathom;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1A23DB94EE140EE8ACDEA09A /* Build configuration list for PBXProject "Fathom" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9BB3C1FCA9EB4D9543D1C91F /* Debug */,
+				B102FD4DAC55EC780A08CE66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		473022B3EB867CD3D4347D40 /* Build configuration list for PBXNativeTarget "Fathom" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				136179C2F4213A53887E7564 /* Debug */,
+				E5D49AE37F0281AA80EA05A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 677CBAC0065F331D162F97F2 /* Project object */;
+}
