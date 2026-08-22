@@ -123,7 +123,7 @@ final class AlarmEngine {
                 attributes: attributes,
                 stopIntent: DismissAlarmIntent(parentID: alarm.id.uuidString),
                 secondaryIntent: nil,
-                sound: .named(fire.sound)
+                sound: .named(fire.sound + ".caf")
             )
             do {
                 _ = try await manager.schedule(id: id, configuration: configuration)
