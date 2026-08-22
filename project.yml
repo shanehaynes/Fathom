@@ -2,7 +2,7 @@ name: Fathom
 options:
   bundleIdPrefix: com.shanehaynes
   deploymentTarget:
-    iOS: "26.0"
+    iOS: "26.1"
   createIntermediateGroups: true
 settings:
   base:
