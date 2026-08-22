@@ -23,7 +23,7 @@ struct WakeView: View {
 
                     Spacer()
 
-                    Text(timeline.date, format: .dateTime.hour(.defaultDigits(amPM: .omitted)).minute())
+                    Text(timeline.date, format: Clock.hhmm)
                         .font(.clock(72))
                         .foregroundStyle(Theme.textHi)
                     Text("\(pairName) · phase two")

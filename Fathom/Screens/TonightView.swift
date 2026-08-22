@@ -33,12 +33,12 @@ struct TonightView: View {
                 Spacer()
 
                 TimelineView(.periodic(from: .now, by: 1)) { timeline in
-                    Text(timeline.date, format: .dateTime.hour(.defaultDigits(amPM: .omitted)).minute())
+                    Text(timeline.date, format: Clock.hhmm)
                         .font(.clock(72))
                         .foregroundStyle(Theme.textHi)
                 }
                 if let next = store.nextWake {
-                    Text("wake at \(next.alarm.timeText)")
+                    Text(wakeLine(next.alarm, at: next.date))
                         .font(.system(size: 14))
                         .foregroundStyle(Theme.textMid)
                         .padding(.top, 10)
@@ -97,6 +97,17 @@ struct TonightView: View {
             UIApplication.shared.isIdleTimerDisabled = on
         }
         .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
+    }
+
+    // "wake at 17:13" when it is tonight; "wake Monday at 17:13" when the next
+    // fire is more than ~20 h out, so a weekday-only alarm set on a Saturday
+    // cannot read as "today".
+    private func wakeLine(_ alarm: AlarmModel, at date: Date) -> String {
+        if date.timeIntervalSinceNow > 20 * 3600 {
+            let day = date.formatted(.dateTime.weekday(.wide))
+            return "wake \(day) at \(alarm.timeText)"
+        }
+        return "wake at \(alarm.timeText)"
     }
 
     private var chargingAndBedside: Bool {

@@ -85,8 +85,7 @@ struct AlarmModel: Codable, Identifiable, Hashable, Sendable {
     var gap: TimeInterval { TimeInterval(gapMinutes * 60) }
 
     var timeText: String {
-        let h12 = hour % 12 == 0 ? 12 : hour % 12
-        return String(format: "%d:%02d", h12, minute)
+        String(format: "%02d:%02d", hour, minute)
     }
 
     /// Next date at which this alarm's phase 1 fires, strictly after `now`.

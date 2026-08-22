@@ -37,3 +37,11 @@ extension View {
             .foregroundStyle(color)
     }
 }
+
+// 24-hour clock for every numeral display, so 05:13 and 17:13 can never be confused.
+enum Clock {
+    static let hhmm = Date.VerbatimFormatStyle(
+        format: "\(hour: .twoDigits(clock: .twentyFourHour, hourCycle: .zeroBased)):\(minute: .twoDigits)",
+        timeZone: .current, calendar: .current
+    )
+}
