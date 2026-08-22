@@ -1,62 +1,71 @@
-# Fathom (working name) — a two-phase alarm clock for iOS
+# Fathom
 
-A Loftie-style wake: a gentle 30-second sound, a chosen gap, then a firmer phase that escalates and holds. Design in [DESIGN.md](DESIGN.md); visual reference in [prototype/design-prototype.html](prototype/design-prototype.html).
+A two-phase alarm clock for iOS. The full spec is [DESIGN.md](DESIGN.md); the visual
+reference is [prototype/design-prototype.html](prototype/design-prototype.html).
 
-## Status: milestone 1 — walking skeleton
+Gentle sound, a gap you chose the night before, then a firm escalation. No snooze,
+no accounts, no daytime destination. The interface speaks only warm white; the
+water owns every other color.
 
-This is the go/no-go build from DESIGN.md §8: a bare test bench that arms a real AlarmKit chain on your phone so the reliability matrix (§9) can be run before any real UI exists. **Written on Linux without compiling** — expect a round of compiler fixes in Xcode; the structure is right, the surface may need adjusting.
+## Building
 
-## Build (on the Mac)
+Requires **Xcode 26+** (AlarmKit, iOS 26 deployment target) on macOS. The project
+file is generated:
 
-Requires Xcode 26+ and an iPhone on iOS 26+ (AlarmKit needs a physical device for the Silent-switch and Focus tests).
-
-```bash
-brew install xcodegen
-git clone https://github.com/shanehaynes/alarm-clock.git && cd alarm-clock
+```
+brew install xcodegen   # once
 xcodegen generate
 open Fathom.xcodeproj
 ```
 
-In Xcode:
-1. Select the `Fathom` target → Signing & Capabilities → set your Team (do the same for `FathomWidgets`). Optionally paste the team ID into `DEVELOPMENT_TEAM` in `project.yml` so regeneration keeps it.
-2. Pick your iPhone as the run destination and run. Accept the AlarmKit permission prompt.
+Placeholder sounds are checked in under `Fathom/Resources/Sounds/`. To regenerate
+them: `python3 scripts/make_placeholder_sounds.py` (no dependencies; uses the
+system `afconvert`).
 
-If the project drifts, edit `project.yml` and re-run `xcodegen generate` — the `.xcodeproj` is generated and git-ignored.
+Set your development team in Signing & Capabilities, then run on a device.
+AlarmKit behavior cannot be trusted from the simulator — milestone 1 is a
+device exercise by definition.
 
 ## Layout
 
-```
-project.yml                       XcodeGen spec (app + Live Activity extension)
-Fathom/App/                       App entry + milestone-1 test bench view
-Fathom/Alarm/ChainPlan.swift      Pure timing spec of a chain (DESIGN.md §3) — no AlarmKit
-Fathom/Alarm/ChainScheduler.swift Turns a plan into AlarmKit system alarms; logs results
-Fathom/Alarm/ChainStore.swift     chainID → alarm IDs, so any dismissal can cancel siblings
-Fathom/Alarm/ImUpIntent.swift     The stopIntent on every alarm: "I'm up" cancels the chain
-Fathom/Alarm/WakeMetadata.swift   Per-alarm metadata (shared with the widget target)
-Fathom/Resources/Sounds/          Placeholder 30 s WAVs (phase1_gentle, phase2_a…e)
-FathomWidgets/                    Minimal Live Activity for lock screen / Dynamic Island
-tools/gen_placeholder_sounds.py   Regenerates the placeholder sounds (stdlib only)
-```
+| Path | Contents |
+|---|---|
+| `Fathom/Scene/` | §5 visual system — Canvas port of the prototype, constants verbatim |
+| `Fathom/Models/` | Alarm model, sound pairs, chain timing (§3), state machine |
+| `Fathom/Alarms/` | AlarmKit chain expansion, dismiss intent, backup notification chain |
+| `Fathom/Audio/` | Wake handoff ramp, wind-down fade, pair previews (§7) |
+| `Fathom/Screens/` | Tonight, Alarm, Wake — three screens, there is no fourth (§4) |
+| `Fathom/Store/` | Single local JSON store (§7 — decided over SwiftData; the model is tiny) |
+| `scripts/` | Placeholder sound synthesis |
 
-## Milestone-1 test protocol
+## Implementation decisions on top of DESIGN.md
 
-Use the test bench: "Phase 1 in 2 min", gap "1 min (test)", plateau repeats 4 → 10 alarms, last fires ~10 minutes out. Then, one row at a time from DESIGN.md §9:
+- **Fixed-date chains.** Chain offsets need second-level precision (B at +0:45),
+  which `Alarm.Schedule.Relative` cannot express (minute granularity). Every
+  chain member is scheduled as `.fixed(Date)` for the next occurrence only, and
+  the engine reschedules on launch, foreground, and dismissal. Consequence to
+  verify in milestone 1: a dismissal from the system UI must reach
+  `DismissAlarmIntent` so the next occurrence gets scheduled without opening
+  the app.
+- **Stop is "I'm up".** There is no snooze, so the system alarm's stop button
+  carries the dismiss intent: any stop cancels the entire chain and (for
+  repeating alarms) schedules tomorrow's.
+- **Backup chain budget.** iOS caps pending notifications at 64, so the backup
+  covers phase 1 + A–E + three plateau checkpoints (9 per occurrence), not every
+  E-repeat.
+- **Persistence is JSON** (`Application Support/fathom.json`), settling §7's
+  open decision. Scheduled-chain state lives in `UserDefaults` so dismissal can
+  cancel siblings across launches.
 
-| # | Set up | Expect |
-|---|---|---|
-| 1 | Silent switch on | Every step audible; full-screen alert with "I'm up" |
-| 2 | Sleep Focus on | Same |
-| 3 | Arm, then force-quit the app | Chain still fires; tapping "I'm up" cancels the rest (check "Armed alarms" after relaunch → empty) |
-| 4 | Arm with phase 1 ≥ 5 min out, restart the phone, leave it locked | Chain fires |
-| 8 | Tap "I'm up" on phase 1 | No phase-2 alarm ever fires — this is the core mechanic |
-| 7 | Arm, then "Cancel everything" | Nothing fires |
+## Milestone status (§8)
 
-Things to confirm on-device that docs don't settle (record the answers in DESIGN.md §3/§7):
-- Does a custom `.wav` from the bundle play, or only `.caf`? (If only `.caf`: `afconvert -f caff -d LEI16 in.wav out.caf` and update `ChainPlan.escalationFiles`.)
-- Does an alarm's sound loop until dismissed, or play once? This decides whether the plateau needs the repeat alarms at all.
-- What happens to an alerting alarm when the next chain member fires 45 s later?
-- Does the system alert appear without the Live Activity extension? (If yes, the extension can be dropped until milestone 2.)
-
-## Next
-
-Milestone 2 — port the prototype's scene (DESIGN.md §5 constants) to SwiftUI `Canvas`.
+1. **Walking skeleton — code complete, unverified.** The chain scheduler,
+   dismiss intent, and backup chain are written but every row of the §9
+   reliability matrix still needs a real iPhone. AlarmKit specifics the design
+   flags as spec-to-verify (28 fixed alarms per occurrence, exact-30 s custom
+   sounds, restart persistence, stop-intent delivery) are exactly that.
+2. **Scene port — code complete.** §5 constants verbatim; compare side-by-side
+   against the prototype at all three depths before calling it done.
+3. **Three screens — code complete** with placeholder audio and JSON persistence.
+4. **First real pair** — not started; compose *Dawn* in Logic per §6.
+5. **Daily-driver build** — blocked on 1–4.

@@ -1,56 +1,32 @@
-# XcodeGen spec — on the Mac: `brew install xcodegen && xcodegen generate && open Fathom.xcodeproj`
 name: Fathom
 options:
   bundleIdPrefix: com.shanehaynes
   deploymentTarget:
-    iOS: "26.0"
+    iOS: "26.1"
   createIntermediateGroups: true
 settings:
   base:
-    SWIFT_VERSION: "5.0"
-    SWIFT_STRICT_CONCURRENCY: minimal
+    SWIFT_VERSION: "6.0"
     TARGETED_DEVICE_FAMILY: "1"
+    INFOPLIST_KEY_UILaunchScreen_Generation: YES
     CODE_SIGN_STYLE: Automatic
-    # Set your team once in Xcode (Signing & Capabilities); XcodeGen keeps it if you also put it here.
-    DEVELOPMENT_TEAM: ""
-    CURRENT_PROJECT_VERSION: 1
-    MARKETING_VERSION: 0.1.0
-
 targets:
   Fathom:
     type: application
     platform: iOS
     sources:
       - path: Fathom
-    dependencies:
-      - target: FathomWidgets
-        embed: true
     info:
       path: Fathom/Info.plist
       properties:
         CFBundleDisplayName: Fathom
-        UILaunchScreen: {}
-        UIUserInterfaceStyle: Dark
+        NSAlarmKitUsageDescription: Fathom schedules your two-phase wake alarms so they fire even when the app is closed.
+        UIBackgroundModes: [audio]
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
-        NSSupportsLiveActivities: true
-        NSAlarmKitUsageDescription: "Fathom schedules your two-phase wake as a system alarm so it rings through Silent and Focus."
+        UIUserInterfaceStyle: Dark
+        ITSAppUsesNonExemptEncryption: false
+        UILaunchScreen: {}
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.shanehaynes.fathom
-        INFOPLIST_KEY_UIUserInterfaceStyle: Dark
-
-  FathomWidgets:
-    type: app-extension
-    platform: iOS
-    sources:
-      - path: FathomWidgets
-      - path: Fathom/Alarm/WakeMetadata.swift
-    info:
-      path: FathomWidgets/Info.plist
-      properties:
-        CFBundleDisplayName: Fathom Wake
-        NSExtension:
-          NSExtensionPointIdentifier: com.apple.widgetkit-extension
-    settings:
-      base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.shanehaynes.fathom.widgets
+        INFOPLIST_KEY_UIStatusBarStyle: UIStatusBarStyleLightContent
