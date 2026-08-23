@@ -17,6 +17,7 @@ struct FathomApp: App {
             Task { @MainActor in
                 let engine = AlarmEngine.shared
                 engine.refreshPhase()
+                EventLog.record("scene active: phase=\(engine.phase)")
                 // Fixed-date chains are rescheduled on every foreground — but
                 // never while a chain is in flight, which would cancel a firing
                 // alarm (§3: dismissal is the only thing that ends a chain).

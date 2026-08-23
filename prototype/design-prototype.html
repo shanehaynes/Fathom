@@ -300,13 +300,13 @@
   var curvedot = document.getElementById('curvedot');
   var wakeveil = document.getElementById('wakeveil');
 
-  var RAMP_END = 4;
+  var RAMP_END = 2;
   var MAX_MIN = 8;
 
   function wakeIntensity(mins) {
     var t = Math.min(mins / RAMP_END, 1);
     var s = t * t * (3 - 2 * t);
-    return 0.14 + 0.86 * s;
+    return 0.85 + 0.15 * s;
   }
 
   function updateWakeUI() {
@@ -316,10 +316,10 @@
     scrubval.textContent = whole + ':' + (sec < 10 ? '0' : '') + sec;
     var total = 16 + whole;
     waketime.textContent = '6:' + (total < 10 ? '0' : '') + total;
-    wakestate.textContent = mins < 0.5 ? 'gentle' : (mins < RAMP_END ? 'rising' : 'full');
+    wakestate.textContent = mins < RAMP_END ? 'rising' : 'full';
     var I = wakeIntensity(mins);
     curvedot.setAttribute('cx', (2 + 196 * (mins / MAX_MIN)).toFixed(1));
-    curvedot.setAttribute('cy', (36 - 31 * ((I - 0.14) / 0.86)).toFixed(1));
+    curvedot.setAttribute('cy', (36 - 31 * ((I - 0.85) / 0.15)).toFixed(1));
     wakeveil.style.opacity = (1 - 0.45 * I).toFixed(2);
     return I;
   }

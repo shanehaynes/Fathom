@@ -71,7 +71,8 @@ final class AlarmEngine {
 
     /// Cancels and reschedules every enabled alarm's entire chain atomically (§3).
     func rescheduleAll(store: AlarmStore) async {
-        guard await ensureAuthorized() else { return }
+        guard await ensureAuthorized() else { EventLog.record("rescheduleAll: not authorized"); return }
+        EventLog.record("rescheduleAll: cancelling \(chains.count) chain(s), phase=\(phase)")
         for chain in chains.values {
             cancelChain(chain)
         }
@@ -128,11 +129,12 @@ final class AlarmEngine {
             } catch {
                 // AlarmKit repeat limits are spec-to-verify (milestone 1) — if the
                 // system rejects the plateau tail, keep what was accepted and log.
-                print("Fathom: schedule rejected for \(fire.role) at \(fire.date): \(error)")
+                EventLog.record("schedule: rejected \(fire.role) at \(fire.date): \(error)")
                 break
             }
         }
 
+        EventLog.record("schedule: \(alarm.id.uuidString.prefix(8)) phase1=\(t) accepted \(memberIDs.count)/\(fires.count) members")
         let backupIDs = await BackupChain.schedule(
             parentID: alarm.id, phase1At: t, phase2At: p2, pair: alarm.pair
         )
@@ -155,7 +157,8 @@ final class AlarmEngine {
 
     /// "I'm up." Cancels everything downstream — phase 2 provably never fires
     /// if dismissed during phase 1 or the gap (§3, reliability row 8).
-    func dismiss(parentID: UUID, store: AlarmStore) async {
+    func dismiss(parentID: UUID, store: AlarmStore, source: String) async {
+        EventLog.record("dismiss: \(parentID.uuidString.prefix(8)) via \(source), phase=\(phase), chain present=\(chains[parentID] != nil)")
         if let chain = chains[parentID] {
             for id in chain.memberIDs {
                 try? AlarmManager.shared.stop(id: id)
@@ -181,7 +184,7 @@ final class AlarmEngine {
     /// Dismiss whatever is currently ringing (Wake screen's single affordance).
     func dismissActive(store: AlarmStore) async {
         if let chain = activeChain {
-            await dismiss(parentID: chain.parentID, store: store)
+            await dismiss(parentID: chain.parentID, store: store, source: "wake-screen")
         } else {
             phase = .done
         }
@@ -237,8 +240,9 @@ struct DismissAlarmIntent: LiveActivityIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult {
+        EventLog.record("intent: DismissAlarmIntent.perform parent=\(parentID.prefix(8))")
         if let id = UUID(uuidString: parentID) {
-            await AlarmEngine.shared.dismiss(parentID: id, store: AlarmStore.shared)
+            await AlarmEngine.shared.dismiss(parentID: id, store: AlarmStore.shared, source: "stop-intent")
         }
         return .result()
     }

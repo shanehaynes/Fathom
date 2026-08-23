@@ -4,7 +4,7 @@ placeholder audio). Real pairs are composed in Logic per §6 (milestone 4);
 these only need to make the two-phase mechanic audible and testable.
 
 Follows the §6 envelope rules that matter to the alarm layer:
-- phase 1: 30 s exactly, fade-in >= 3 s, full fade-out baked in, ~-6 dB vs chain
+- phase 1: 30 s exactly, fade-in >= 3 s, full fade-out baked in, ~-4 dB vs chain
 - chain A-E: 30 s each, escalating energy via added layers, not loudness tricks
 - E: seamless loop (every component has an integer number of cycles in 30 s)
 
@@ -98,7 +98,10 @@ def convert(wav, name, m4a=False):
 # Fountain: water -> bright bells. Detuned low shimmer, pentatonic bells above.
 
 def dawn_gentle():
-    return [(110, 0.9, 1, 0.35), (165, 0.7, 2, 0.3), (220, 0.6, 1, 0.3), (277, 0.35, 3, 0.4)]
+    # Octave doublings (440, 554) so the gentle phase survives an iPhone speaker,
+    # which rolls off below ~300 Hz.
+    return [(110, 0.9, 1, 0.35), (165, 0.7, 2, 0.3), (220, 0.6, 1, 0.3), (277, 0.35, 3, 0.4),
+            (440, 0.5, 1, 0.3), (554, 0.3, 3, 0.4)]
 
 def dawn_chain(step):
     base = [(110, 0.9, 1, 0.25), (220, 0.8, 2, 0.25), (330, 0.6, 2, 0.3)]
@@ -107,7 +110,8 @@ def dawn_chain(step):
     return base + bright[: step + 1]
 
 def fountain_gentle():
-    return [(98, 0.9, 2, 0.5), (147, 0.7, 3, 0.5), (196, 0.5, 2, 0.4), (294, 0.3, 5, 0.6)]
+    return [(98, 0.9, 2, 0.5), (147, 0.7, 3, 0.5), (196, 0.5, 2, 0.4), (294, 0.3, 5, 0.6),
+            (392, 0.5, 2, 0.4), (588, 0.3, 5, 0.6)]
 
 def fountain_chain(step):
     base = [(98, 0.9, 3, 0.4), (196, 0.7, 4, 0.4), (392, 0.5, 3, 0.4)]
@@ -119,9 +123,9 @@ def fountain_chain(step):
 def build_pair(pid, gentle_layers, chain_fn):
     # §6 gains: chain climbs A->D then holds at E; escalation is layers + a
     # modest energy rise, never a mastering trick.
-    chain_gain = [0.38, 0.45, 0.52, 0.58, 0.60]
+    chain_gain = [0.70, 0.78, 0.85, 0.92, 0.95]
 
-    p1 = render(30, gentle_layers, fade_in=3.5, fade_out=4, gain=0.28)
+    p1 = render(30, gentle_layers, fade_in=3.5, fade_out=4, gain=0.50)
     write_wav(f"{TMP}/{pid}-phase1.wav", p1)
     convert(f"{TMP}/{pid}-phase1.wav", f"{pid}-phase1")
 
@@ -134,16 +138,16 @@ def build_pair(pid, gentle_layers, chain_fn):
         write_wav(f"{TMP}/{pid}-{step}.wav", s)
         convert(f"{TMP}/{pid}-{step}.wav", f"{pid}-{step}")
 
-    cont = render(60, chain_fn(4), gain=0.6)
+    cont = render(60, chain_fn(4), gain=0.95)
     write_wav(f"{TMP}/{pid}-continuous.wav", cont)
     convert(f"{TMP}/{pid}-continuous.wav", f"{pid}-continuous", m4a=True)
 
-    g5 = render(5, gentle_layers, fade_in=0.8, gain=0.35)
-    f5 = render(5, chain_fn(3), fade_out=0.8, gain=0.55)
+    g5 = render(5, gentle_layers, fade_in=0.8, gain=0.50)
+    f5 = render(5, chain_fn(3), fade_out=0.8, gain=0.85)
     write_wav(f"{TMP}/{pid}-preview.wav", crossfade(g5, f5, 1.5))
     convert(f"{TMP}/{pid}-preview.wav", f"{pid}-preview", m4a=True)
 
-    sleep = render(60, gentle_layers, gain=0.22)
+    sleep = render(60, gentle_layers, gain=0.30)
     write_wav(f"{TMP}/{pid}-sleep.wav", sleep)
     convert(f"{TMP}/{pid}-sleep.wav", f"{pid}-sleep", m4a=True)
 

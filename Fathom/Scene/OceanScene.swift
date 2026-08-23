@@ -206,8 +206,14 @@ struct OceanScene: View {
 enum Depth {
     static let night = 0.10
     static let day = 0.85
-    /// Wake: 0.14 + 0.86·smoothstep(min(m/4, 1)), m = minutes since phase 2 began.
+    /// Wake during phase 1 and the gap: a visible lift above night, not yet day.
+    static let stirring = 0.35
+    /// Wake in phase 2: opens at day depth — a few feet down — after a 3 s ease
+    /// up from stirring, then 0.85 + 0.15·smoothstep(min(m/2, 1)) to full.
+    /// m = minutes since phase 2 began (negative during phase 1 / the gap).
     static func wake(minutesIntoPhase2 m: Double) -> Double {
-        0.14 + 0.86 * smoothstep(min(m / 4, 1))
+        if m < 0 { return stirring }
+        let lift = stirring + (day - stirring) * smoothstep(m / 0.05)
+        return lift + (1 - day) * smoothstep(min(m / 2, 1))
     }
 }

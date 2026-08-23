@@ -41,6 +41,7 @@
 		CB27B5099AFA97BFDB287F0A /* AlarmStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817F20BFA683C49646F740DD /* AlarmStore.swift */; };
 		D1053FCF9F6D4ADB21370A17 /* fountain-continuous.caf in Resources */ = {isa = PBXBuildFile; fileRef = D0745E1B38563714AB6C663B /* fountain-continuous.caf */; };
 		D955E04E905731A853622685 /* fountain-b.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9AE9E1A788B89CC655D41E32 /* fountain-b.caf */; };
+		E0A9F47384F40CC4142D5038 /* EventLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC976160A9B65D30CD65B1F /* EventLog.swift */; };
 		E42704F9B4F1942F780ECEAC /* fountain-e.caf in Resources */ = {isa = PBXBuildFile; fileRef = 0802BDE95D28174A40565C20 /* fountain-e.caf */; };
 		F009967672880F60BF8D92D3 /* BackupChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CDF54A22E74C0D1F15BD87 /* BackupChain.swift */; };
 		F3149C8D8C52266797809368 /* FathomWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7A69B350ACB04F6CB6FE9EDA /* FathomWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -79,6 +80,7 @@
 		10FFAB409EF33E8EA6223E6F /* fountain-preview.m4a */ = {isa = PBXFileReference; path = "fountain-preview.m4a"; sourceTree = "<group>"; };
 		3725A17C113131EA7CE18BD6 /* dawn-phase1.caf */ = {isa = PBXFileReference; path = "dawn-phase1.caf"; sourceTree = "<group>"; };
 		3D717591654126DDEF2EA97D /* AlarmSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSettingsView.swift; sourceTree = "<group>"; };
+		3EC976160A9B65D30CD65B1F /* EventLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLog.swift; sourceTree = "<group>"; };
 		4102A889913279616A1DDEFD /* dawn-preview.caf */ = {isa = PBXFileReference; path = "dawn-preview.caf"; sourceTree = "<group>"; };
 		47AFC2E49107CA3B1BC07BDE /* FathomMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FathomMetadata.swift; sourceTree = "<group>"; };
 		4E43155EF003B6DC859FBBC1 /* dawn-sleep.caf */ = {isa = PBXFileReference; path = "dawn-sleep.caf"; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 			children = (
 				9EC1DA17EB705624A6BFA37B /* AlarmEngine.swift */,
 				54CDF54A22E74C0D1F15BD87 /* BackupChain.swift */,
+				3EC976160A9B65D30CD65B1F /* EventLog.swift */,
 				47AFC2E49107CA3B1BC07BDE /* FathomMetadata.swift */,
 			);
 			path = Alarms;
@@ -399,6 +402,7 @@
 				5F00AC5320F20EC173BF9B65 /* AlarmSettingsView.swift in Sources */,
 				CB27B5099AFA97BFDB287F0A /* AlarmStore.swift in Sources */,
 				F009967672880F60BF8D92D3 /* BackupChain.swift in Sources */,
+				E0A9F47384F40CC4142D5038 /* EventLog.swift in Sources */,
 				70EF4FB835B04058A9FD97E4 /* FathomApp.swift in Sources */,
 				B8558494361309310D2A3B81 /* FathomMetadata.swift in Sources */,
 				5D5B8268953D47D257249999 /* Models.swift in Sources */,

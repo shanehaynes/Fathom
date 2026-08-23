@@ -10,7 +10,7 @@ struct WakeView: View {
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { timeline in
-            let m = max(0, timeline.date.timeIntervalSince(phase2Start) / 60)
+            let m = timeline.date.timeIntervalSince(phase2Start) / 60   // negative before phase 2
             let I = Depth.wake(minutesIntoPhase2: m)
             ZStack {
                 // On Wake, veil opacity is 1 − 0.45·I (§5) — the water rises
@@ -67,6 +67,6 @@ struct WakeView: View {
     }
 
     private func phaseLabel(minutes m: Double) -> String {
-        m < 0.5 ? "gentle" : (m < 4 ? "rising" : "full")
+        m < 0 ? "gentle" : (m < 2 ? "rising" : "full")
     }
 }

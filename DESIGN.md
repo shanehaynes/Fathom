@@ -137,7 +137,8 @@ Six radial blooms on a near-black ground, additively blended, hues drifting inde
 | State | Depth I |
 |---|---|
 | Night (Tonight) | `0.10` |
-| Wake (phase 2) | `0.14 + 0.86·smoothstep(min(m/4, 1))`, m = minutes since phase 2 began; holds at 1.0 |
+| Wake (phase 1, gap) | `0.35` — a visible lift above night, not yet day |
+| Wake (phase 2) | `0.85 + 0.15·smoothstep(min(m/2, 1))` after a 3 s ease up from 0.35; m = minutes since phase 2 began. Opens at day depth — the firm phase is a few feet down — and holds at 1.0 |
 | Day (Alarm) | `0.85` |
 
 State transitions (night→wake handled by the ramp itself; wake→idle, entering Alarm) ease over a few seconds rather than stepping.
