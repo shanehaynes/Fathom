@@ -39,19 +39,19 @@ For an alarm set at time `T` with gap `G ∈ {3, 6, 9}` minutes:
 ```
 T          Phase 1 — gentle sound, 30 s, fade baked into the file. Then silence.
 T + G      Phase 2 — begins and escalates:
-  +0:00      file A (warm, present)
-  +0:45      file B (brighter, fuller)
-  +1:30      file C (rhythmic, insistent)
-  +2:30      file D (near-full energy)
-  +4:00      file E (plateau) — repeats until dismissed, cap 15 min
+  +0:00      file A (warm, present — already clearly audible)
+  +0:30      file B (brighter, fuller)
+  +1:00      file C (rhythmic, insistent)
+  +1:30      file D (near-full energy)
+  +2:00      file E (plateau) — repeats every 30 s until dismissed, cap 15 min
 ```
 
-Phase 2's ramp is a smoothstep, not a straight line: the early escalation is barely perceptible, the middle is where it climbs, the plateau never gets louder — insistent, never punishing.
+Phase 2 is contiguous — each 30 s file starts as the previous ends, no silence between steps — and the climb is linear: A opens clearly audible, each step adds an even increment, the plateau never gets louder — insistent, never punishing. (Device testing killed the original smoothstep-with-gaps: the gaps read as the alarm giving up, and a quiet A is indistinguishable from phase 1.)
 
 ### State machine
 
 ```
-scheduled ──T──▶ phase1_playing ──30s──▶ gap_waiting ──T+G──▶ phase2_escalating ──4min──▶ phase2_plateau
+scheduled ──T──▶ phase1_playing ──30s──▶ gap_waiting ──T+G──▶ phase2_escalating ──2min──▶ phase2_plateau
      │                 │                     │                      │                          │
      │              "I'm up"              "I'm up"               "I'm up"                   "I'm up"
      │                 ▼                     ▼                      ▼                          ▼
@@ -173,7 +173,7 @@ A wake sound is a **pair** — one identity with a gentle half and a firm half s
 
 ### Phase 2 chain (×5 per pair: A–E)
 
-Each 30 s. Fired at +0:00 / +0:45 / +1:30 / +2:30 / +4:00 into phase 2 (§3), so files must sound complete on their own — the gaps between fires are silent at the alarm layer until the app foregrounds and hands off to continuous in-app audio.
+Each 30 s. Fired back-to-back at +0:00 / +0:30 / +1:00 / +1:30 / +2:00 into phase 2 (§3); each file should end where the next begins (short fades only, no silence).
 
 - **A** introduces the pair's melodic identity at conversational energy
 - **B–D** add layers: brightness (upper octaves, 2–8 kHz), rhythmic density, fuller voicing — hotter in energy more than in raw loudness

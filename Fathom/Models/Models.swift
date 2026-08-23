@@ -50,7 +50,7 @@ enum ChainTiming {
     static let phase1Duration: TimeInterval = 30
     /// A / B / C / D / E first fires.
     static let offsets: [(ChainStep, TimeInterval)] = [
-        (.a, 0), (.b, 45), (.c, 90), (.d, 150), (.e, 240),
+        (.a, 0), (.b, 30), (.c, 60), (.d, 90), (.e, 120),
     ]
     /// E repeats until dismissed, cap 15 min into phase 2. Each file is 30 s,
     /// so re-fire every 30 s. AlarmKit per-app alarm limits are spec-to-verify
@@ -60,7 +60,7 @@ enum ChainTiming {
 
     static var plateauRepeatOffsets: [TimeInterval] {
         var out: [TimeInterval] = []
-        var t = 240 + plateauRepeatInterval
+        var t = 120 + plateauRepeatInterval
         while t < cap {
             out.append(t)
             t += plateauRepeatInterval

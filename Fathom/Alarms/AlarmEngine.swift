@@ -8,7 +8,7 @@ import Observation
 // §3 + §7 — each armed alarm expands to a chain of system alarms
 // (phase 1 + A–E + E-repeats). Every chain member carries metadata linking it
 // to the parent so any dismissal cancels siblings. Chain offsets need
-// second-level precision (B at +45 s), which Alarm.Schedule.Relative cannot
+// second-level precision (steps every 30 s), which Alarm.Schedule.Relative cannot
 // express, so every member is a .fixed(Date) for the *next* occurrence only;
 // the engine reschedules on launch, on foreground, and on dismissal.
 // Restart-persistence of fixed chains is spec-to-verify (milestone 1).

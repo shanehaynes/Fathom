@@ -23,7 +23,7 @@ OUT = os.path.join(os.path.dirname(__file__), "..", "Fathom", "Resources", "Soun
 TMP = "/tmp/fathom-sounds"
 
 
-def render(duration, layers, fade_in=0.0, fade_out=0.0, gain=0.5):
+def render(duration, layers, fade_in=0.0, fade_out=0.0, gain=0.5, drive=1.0):
     """layers: list of (freq, amp, tremolo_rate, tremolo_depth). Integer freqs
     and tremolo rates that divide evenly into the duration keep loops seamless."""
     n = int(duration * SR)
@@ -35,6 +35,11 @@ def render(duration, layers, fade_in=0.0, fade_out=0.0, gain=0.5):
             trem = 1.0 - tdepth * (0.5 + 0.5 * math.sin(tw * i))
             out[i] += amp * trem * math.sin(w * i)
     peak = max(abs(x) for x in out) or 1.0
+    if drive > 1.0:
+        # Soft clip: raises RMS (loudness) without raising peaks. Placeholder-only
+        # trick; real pairs get their loudness from arrangement (§6).
+        k = math.tanh(drive)
+        out = [math.tanh(drive * x / peak) / k * peak for x in out]
     scale = gain / peak
     fi = int(fade_in * SR)
     fo = int(fade_out * SR)
@@ -123,7 +128,9 @@ def fountain_chain(step):
 def build_pair(pid, gentle_layers, chain_fn):
     # §6 gains: chain climbs A->D then holds at E; escalation is layers + a
     # modest energy rise, never a mastering trick.
-    chain_gain = [0.70, 0.78, 0.85, 0.92, 0.95]
+    chain_gain = [0.90, 0.92, 0.94, 0.95, 0.95]
+    # Even loudness steps A->E come from rising drive, not peaks (all near 0 dBFS).
+    chain_drive = [1.4, 2.1, 2.5, 2.9, 4.0]
 
     p1 = render(30, gentle_layers, fade_in=3.5, fade_out=4, gain=0.50)
     write_wav(f"{TMP}/{pid}-phase1.wav", p1)
@@ -132,18 +139,18 @@ def build_pair(pid, gentle_layers, chain_fn):
     for i, step in enumerate("abcde"):
         seamless = step == "e"
         s = render(30, chain_fn(i),
-                   fade_in=0 if seamless else 0.4,
-                   fade_out=0 if seamless else 0.6,
-                   gain=chain_gain[i])
+                   fade_in=0 if seamless else 0.15,
+                   fade_out=0 if seamless else 0.25,
+                   gain=chain_gain[i], drive=chain_drive[i])
         write_wav(f"{TMP}/{pid}-{step}.wav", s)
         convert(f"{TMP}/{pid}-{step}.wav", f"{pid}-{step}")
 
-    cont = render(60, chain_fn(4), gain=0.95)
+    cont = render(60, chain_fn(4), gain=0.95, drive=4.0)
     write_wav(f"{TMP}/{pid}-continuous.wav", cont)
     convert(f"{TMP}/{pid}-continuous.wav", f"{pid}-continuous", m4a=True)
 
     g5 = render(5, gentle_layers, fade_in=0.8, gain=0.50)
-    f5 = render(5, chain_fn(3), fade_out=0.8, gain=0.85)
+    f5 = render(5, chain_fn(3), fade_out=0.8, gain=0.90, drive=2.5)
     write_wav(f"{TMP}/{pid}-preview.wav", crossfade(g5, f5, 1.5))
     convert(f"{TMP}/{pid}-preview.wav", f"{pid}-preview", m4a=True)
 

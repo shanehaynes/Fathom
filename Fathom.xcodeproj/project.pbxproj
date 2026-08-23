@@ -27,9 +27,11 @@
 		74E644FDAA6B8B8E3DE93594 /* fountain-phase1.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9440253E56B46752D70FAF03 /* fountain-phase1.caf */; };
 		7552C880BA4DCDDE75CF88A5 /* dawn-a.caf in Resources */ = {isa = PBXBuildFile; fileRef = D593B81E81DAE72EDB7F261A /* dawn-a.caf */; };
 		766C77E7609EDBCF35A322ED /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FAFFBB08BE92D1C64D838 /* Theme.swift */; };
+		7D3501611FE1B5A074B0E865 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FAFFBB08BE92D1C64D838 /* Theme.swift */; };
 		8DE294D12F104FAADBC671B0 /* dawn-d.caf in Resources */ = {isa = PBXBuildFile; fileRef = FECB636142659848BD6D18B6 /* dawn-d.caf */; };
 		910B1621300C9C5DB9482171 /* WakeLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676572329D30F6241A343559 /* WakeLiveActivity.swift */; };
 		92924164E2305063A9134623 /* fountain-a.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8D3F55D641B62D3C28AA5AA7 /* fountain-a.caf */; };
+		9403E294FAB62CDFBFBC6BBA /* OceanScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B1867ACC2F41EF070B55D3 /* OceanScene.swift */; };
 		99EDC25816AE22C61DF79BB5 /* dawn-sleep.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 990CDD997C896CE109B9080B /* dawn-sleep.m4a */; };
 		AC67EE1D72E821275FBCC8E3 /* fountain-c.caf in Resources */ = {isa = PBXBuildFile; fileRef = DCE0E2A308224151BB0DDB6A /* fountain-c.caf */; };
 		B017F1F7D634FE469AB0C5C5 /* dawn-preview.caf in Resources */ = {isa = PBXBuildFile; fileRef = 4102A889913279616A1DDEFD /* dawn-preview.caf */; };
@@ -390,6 +392,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A0FF55CC25689B54AF30E51 /* FathomMetadata.swift in Sources */,
+				9403E294FAB62CDFBFBC6BBA /* OceanScene.swift in Sources */,
+				7D3501611FE1B5A074B0E865 /* Theme.swift in Sources */,
 				910B1621300C9C5DB9482171 /* WakeLiveActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

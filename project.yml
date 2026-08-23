@@ -41,6 +41,8 @@ targets:
     sources:
       - path: FathomWidgets
       - path: Fathom/Alarms/FathomMetadata.swift
+      - path: Fathom/Scene/OceanScene.swift
+      - path: Fathom/Theme/Theme.swift
     info:
       path: FathomWidgets/Info.plist
       properties:

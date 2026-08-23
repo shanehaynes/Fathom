@@ -128,78 +128,86 @@ struct OceanScene: View {
     }
 
     private func draw(in context: inout GraphicsContext, size: CGSize, date: Date) {
-        let t = model.t(at: date)
-        let W = size.width, H = size.height
-        let I = min(max(depth, 0), 1)
-
-        // Ground
-        context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(Theme.ink))
-
         // Bedside composition drift: the entire scene wanders ±8 px over minutes.
+        var drift = CGPoint.zero
         if pixelDrift {
             let s = date.timeIntervalSince(model.epoch)
-            let dx = 8 * sin(2 * .pi * s / 420)
-            let dy = 8 * cos(2 * .pi * s / 560)
-            context.translateBy(x: dx, y: dy)
+            drift = CGPoint(x: 8 * sin(2 * .pi * s / 420), y: 8 * cos(2 * .pi * s / 560))
         }
+        drawOcean(in: &context, size: size, t: model.t(at: date), depth: depth,
+                  veilFactor: veilFactor, mode: mode, blooms: model.blooms, drift: drift)
+    }
+}
 
-        // Blooms — additive
-        context.blendMode = .plusLighter
-        let sat = 40 + 45 * I
-        let lig = 30 + 28 * I
-        let alpha = 0.07 + 0.34 * I
-        for b in model.blooms {
-            let x = (b.cx + 0.10 * sin(t * 0.00013 * b.spx + b.ph)) * W
-            let y = (b.cy + 0.07 * cos(t * 0.00011 * b.spy + b.ph * 1.3)) * H
-            let r = b.r * W * (0.85 + 0.55 * I)
-            let hue: Double
-            let satEff: Double
-            let ligEff: Double
-            switch mode {
-            case .normal:
-                hue = (b.hue0 + t * b.hspd).truncatingRemainder(dividingBy: 360)
-                satEff = sat
-                ligEff = lig
-            case .redShift:
-                hue = 4
-                satEff = 70
-                ligEff = min(lig, 16)
-            }
-            let core = hslColor(hue: hue, sat: satEff, light: ligEff, alpha: alpha)
-            let edge = hslColor(hue: hue, sat: satEff, light: ligEff, alpha: 0)
-            let rect = CGRect(x: x - r, y: y - r, width: 2 * r, height: 2 * r)
-            context.fill(
-                Path(ellipseIn: rect),
-                with: .radialGradient(
-                    Gradient(colors: [core, edge]),
-                    center: CGPoint(x: x, y: y),
-                    startRadius: 0,
-                    endRadius: r
-                )
-            )
+/// The §5 scene as a pure draw. Shared by the live Canvas above and by the
+/// Live Activity (FathomWidgets), which cannot animate but can glow on the
+/// lock screen at the depth of whichever chain member is alerting.
+func drawOcean(in context: inout GraphicsContext, size: CGSize, t: Double, depth: Double,
+               veilFactor: Double = 1.0, mode: SceneMode = .normal, blooms: [Bloom],
+               drift: CGPoint = .zero) {
+    let W = size.width, H = size.height
+    let I = min(max(depth, 0), 1)
+
+    // Ground
+    context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(Theme.ink))
+    if drift != .zero { context.translateBy(x: drift.x, y: drift.y) }
+
+    // Blooms — additive
+    context.blendMode = .plusLighter
+    let sat = 40 + 45 * I
+    let lig = 30 + 28 * I
+    let alpha = 0.07 + 0.34 * I
+    for b in blooms {
+        let x = (b.cx + 0.10 * sin(t * 0.00013 * b.spx + b.ph)) * W
+        let y = (b.cy + 0.07 * cos(t * 0.00011 * b.spy + b.ph * 1.3)) * H
+        let r = b.r * W * (0.85 + 0.55 * I)
+        let hue: Double
+        let satEff: Double
+        let ligEff: Double
+        switch mode {
+        case .normal:
+            hue = (b.hue0 + t * b.hspd).truncatingRemainder(dividingBy: 360)
+            satEff = sat
+            ligEff = lig
+        case .redShift:
+            hue = 4
+            satEff = 70
+            ligEff = min(lig, 16)
         }
-        context.blendMode = .normal
-
-        // Veil: radial 130%×110% at (50%, 42%), rgba(6,9,14, 0.28 → 0.74).
-        // CSS ellipse sizes map to rx = 1.30·W, ry = 1.10·H; Canvas gradients are
-        // circular, so scale y while drawing.
-        let rx = 1.30 * W
-        let ry = 1.10 * H
-        var veil = context
-        veil.translateBy(x: 0.50 * W, y: 0.42 * H)
-        veil.scaleBy(x: 1, y: ry / rx)
-        let inner = Theme.ink.opacity(0.28 * veilFactor)
-        let outer = Theme.ink.opacity(0.74 * veilFactor)
-        veil.fill(
-            Path(ellipseIn: CGRect(x: -rx, y: -rx, width: 2 * rx, height: 2 * rx)),
+        let core = hslColor(hue: hue, sat: satEff, light: ligEff, alpha: alpha)
+        let edge = hslColor(hue: hue, sat: satEff, light: ligEff, alpha: 0)
+        let rect = CGRect(x: x - r, y: y - r, width: 2 * r, height: 2 * r)
+        context.fill(
+            Path(ellipseIn: rect),
             with: .radialGradient(
-                Gradient(colors: [inner, outer]),
-                center: .zero,
+                Gradient(colors: [core, edge]),
+                center: CGPoint(x: x, y: y),
                 startRadius: 0,
-                endRadius: rx
+                endRadius: r
             )
         )
     }
+    context.blendMode = .normal
+
+    // Veil: radial 130%×110% at (50%, 42%), rgba(6,9,14, 0.28 → 0.74).
+    // CSS ellipse sizes map to rx = 1.30·W, ry = 1.10·H; Canvas gradients are
+    // circular, so scale y while drawing.
+    let rx = 1.30 * W
+    let ry = 1.10 * H
+    var veil = context
+    veil.translateBy(x: 0.50 * W, y: 0.42 * H)
+    veil.scaleBy(x: 1, y: ry / rx)
+    let inner = Theme.ink.opacity(0.28 * veilFactor)
+    let outer = Theme.ink.opacity(0.74 * veilFactor)
+    veil.fill(
+        Path(ellipseIn: CGRect(x: -rx, y: -rx, width: 2 * rx, height: 2 * rx)),
+        with: .radialGradient(
+            Gradient(colors: [inner, outer]),
+            center: .zero,
+            startRadius: 0,
+            endRadius: rx
+        )
+    )
 }
 
 // §5 depth per state

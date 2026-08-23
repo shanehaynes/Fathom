@@ -40,7 +40,7 @@ device exercise by definition.
 
 ## Implementation decisions on top of DESIGN.md
 
-- **Fixed-date chains.** Chain offsets need second-level precision (B at +0:45),
+- **Fixed-date chains.** Chain offsets need second-level precision (steps every 30 s),
   which `Alarm.Schedule.Relative` cannot express (minute granularity). Every
   chain member is scheduled as `.fixed(Date)` for the next occurrence only, and
   the engine reschedules on launch, foreground, and dismissal. Consequence to
