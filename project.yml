@@ -16,6 +16,9 @@ targets:
     platform: iOS
     sources:
       - path: Fathom
+    dependencies:
+      - target: FathomWidgets
+        embed: true
     info:
       path: Fathom/Info.plist
       properties:
@@ -26,7 +29,23 @@ targets:
         UIUserInterfaceStyle: Dark
         ITSAppUsesNonExemptEncryption: false
         UILaunchScreen: {}
+        NSSupportsLiveActivities: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.shanehaynes.fathom
         INFOPLIST_KEY_UIStatusBarStyle: UIStatusBarStyleLightContent
+  FathomWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: FathomWidgets
+      - path: Fathom/Alarms/FathomMetadata.swift
+    info:
+      path: FathomWidgets/Info.plist
+      properties:
+        CFBundleDisplayName: Fathom Wake
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.shanehaynes.fathom.widgets

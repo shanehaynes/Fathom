@@ -13,12 +13,6 @@ import Observation
 // the engine reschedules on launch, on foreground, and on dismissal.
 // Restart-persistence of fixed chains is spec-to-verify (milestone 1).
 
-struct FathomMetadata: AlarmMetadata {
-    let parentID: UUID
-    let role: String          // "phase1", "a"..."e", "e-repeat-N"
-    let phase2Start: Date
-}
-
 /// One scheduled occurrence of an alarm: the parent model ID plus every
 /// system-alarm ID in its chain. Persisted so dismissal can cancel siblings
 /// across launches.
@@ -107,7 +101,10 @@ final class AlarmEngine {
         let manager = AlarmManager.shared
         for fire in fires {
             let id = UUID()
-            let metadata = FathomMetadata(parentID: alarm.id, role: fire.role, phase2Start: p2)
+            let metadata = FathomMetadata(
+                parentID: alarm.id, role: fire.role, phase2Start: p2,
+                label: fire.role == "phase1" ? "\(alarm.pair.name) · gentle" : "\(alarm.pair.name) · phase two"
+            )
             let alert = AlarmPresentation.Alert(
                 title: "\(alarm.pair.name)",
                 secondaryButton: nil,

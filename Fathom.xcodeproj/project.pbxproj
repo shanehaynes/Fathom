@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00E6430A28A5429FC39F5A24 /* WakeAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA41CED8222668D6A98C703 /* WakeAudio.swift */; };
+		0A0FF55CC25689B54AF30E51 /* FathomMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AFC2E49107CA3B1BC07BDE /* FathomMetadata.swift */; };
 		0EEF7D46AA57E66E549A7457 /* AlarmEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC1DA17EB705624A6BFA37B /* AlarmEngine.swift */; };
 		257592B296A3185BB288DAF8 /* dawn-continuous.caf in Resources */ = {isa = PBXBuildFile; fileRef = 798D6904AE10B27D90EE3C7B /* dawn-continuous.caf */; };
 		26ED8708CDDCE2FE287BFAF2 /* dawn-c.caf in Resources */ = {isa = PBXBuildFile; fileRef = 7C08426EC39145AA7BD1634D /* dawn-c.caf */; };
@@ -27,11 +28,13 @@
 		7552C880BA4DCDDE75CF88A5 /* dawn-a.caf in Resources */ = {isa = PBXBuildFile; fileRef = D593B81E81DAE72EDB7F261A /* dawn-a.caf */; };
 		766C77E7609EDBCF35A322ED /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FAFFBB08BE92D1C64D838 /* Theme.swift */; };
 		8DE294D12F104FAADBC671B0 /* dawn-d.caf in Resources */ = {isa = PBXBuildFile; fileRef = FECB636142659848BD6D18B6 /* dawn-d.caf */; };
+		910B1621300C9C5DB9482171 /* WakeLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676572329D30F6241A343559 /* WakeLiveActivity.swift */; };
 		92924164E2305063A9134623 /* fountain-a.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8D3F55D641B62D3C28AA5AA7 /* fountain-a.caf */; };
 		99EDC25816AE22C61DF79BB5 /* dawn-sleep.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 990CDD997C896CE109B9080B /* dawn-sleep.m4a */; };
 		AC67EE1D72E821275FBCC8E3 /* fountain-c.caf in Resources */ = {isa = PBXBuildFile; fileRef = DCE0E2A308224151BB0DDB6A /* fountain-c.caf */; };
 		B017F1F7D634FE469AB0C5C5 /* dawn-preview.caf in Resources */ = {isa = PBXBuildFile; fileRef = 4102A889913279616A1DDEFD /* dawn-preview.caf */; };
 		B7266DCF8602309F505DAD74 /* dawn-sleep.caf in Resources */ = {isa = PBXBuildFile; fileRef = 4E43155EF003B6DC859FBBC1 /* dawn-sleep.caf */; };
+		B8558494361309310D2A3B81 /* FathomMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AFC2E49107CA3B1BC07BDE /* FathomMetadata.swift */; };
 		B900FC9EBBBAC53A7855AF93 /* dawn-b.caf in Resources */ = {isa = PBXBuildFile; fileRef = AB077906CF5F2EDD769BC4D2 /* dawn-b.caf */; };
 		C274BECD3C98AEEB29ACDEB7 /* dawn-preview.m4a in Resources */ = {isa = PBXBuildFile; fileRef = DD467BDF9FF84EC98FE51E80 /* dawn-preview.m4a */; };
 		C448C9459103CE600E4BC222 /* fountain-preview.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 10FFAB409EF33E8EA6223E6F /* fountain-preview.m4a */; };
@@ -40,23 +43,52 @@
 		D955E04E905731A853622685 /* fountain-b.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9AE9E1A788B89CC655D41E32 /* fountain-b.caf */; };
 		E42704F9B4F1942F780ECEAC /* fountain-e.caf in Resources */ = {isa = PBXBuildFile; fileRef = 0802BDE95D28174A40565C20 /* fountain-e.caf */; };
 		F009967672880F60BF8D92D3 /* BackupChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CDF54A22E74C0D1F15BD87 /* BackupChain.swift */; };
+		F3149C8D8C52266797809368 /* FathomWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7A69B350ACB04F6CB6FE9EDA /* FathomWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F5165351DD5F6EAB0A8CEA48 /* dawn-phase1.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3725A17C113131EA7CE18BD6 /* dawn-phase1.caf */; };
 		F70BADE910120F0E39AA4B96 /* OceanScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B1867ACC2F41EF070B55D3 /* OceanScene.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		CFA9FACB285B08AA1076E49F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 677CBAC0065F331D162F97F2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 14BE864DEF8008110C596ECD;
+			remoteInfo = FathomWidgets;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		459BEE6C9518723CED82AAB6 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				F3149C8D8C52266797809368 /* FathomWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		001FAFFBB08BE92D1C64D838 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		0802BDE95D28174A40565C20 /* fountain-e.caf */ = {isa = PBXFileReference; path = "fountain-e.caf"; sourceTree = "<group>"; };
+		0DDF141B99062328D63E0A72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		10FFAB409EF33E8EA6223E6F /* fountain-preview.m4a */ = {isa = PBXFileReference; path = "fountain-preview.m4a"; sourceTree = "<group>"; };
 		3725A17C113131EA7CE18BD6 /* dawn-phase1.caf */ = {isa = PBXFileReference; path = "dawn-phase1.caf"; sourceTree = "<group>"; };
 		3D717591654126DDEF2EA97D /* AlarmSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSettingsView.swift; sourceTree = "<group>"; };
 		4102A889913279616A1DDEFD /* dawn-preview.caf */ = {isa = PBXFileReference; path = "dawn-preview.caf"; sourceTree = "<group>"; };
+		47AFC2E49107CA3B1BC07BDE /* FathomMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FathomMetadata.swift; sourceTree = "<group>"; };
 		4E43155EF003B6DC859FBBC1 /* dawn-sleep.caf */ = {isa = PBXFileReference; path = "dawn-sleep.caf"; sourceTree = "<group>"; };
 		5200636B7E44C78C9BF0CDAB /* fountain-sleep.m4a */ = {isa = PBXFileReference; path = "fountain-sleep.m4a"; sourceTree = "<group>"; };
 		5429A232B8DFEFD1A24EEEC8 /* WakeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WakeView.swift; sourceTree = "<group>"; };
 		54CDF54A22E74C0D1F15BD87 /* BackupChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupChain.swift; sourceTree = "<group>"; };
 		64B1867ACC2F41EF070B55D3 /* OceanScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OceanScene.swift; sourceTree = "<group>"; };
+		676572329D30F6241A343559 /* WakeLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WakeLiveActivity.swift; sourceTree = "<group>"; };
 		798D6904AE10B27D90EE3C7B /* dawn-continuous.caf */ = {isa = PBXFileReference; path = "dawn-continuous.caf"; sourceTree = "<group>"; };
+		7A69B350ACB04F6CB6FE9EDA /* FathomWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = FathomWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C08426EC39145AA7BD1634D /* dawn-c.caf */ = {isa = PBXFileReference; path = "dawn-c.caf"; sourceTree = "<group>"; };
 		817F20BFA683C49646F740DD /* AlarmStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmStore.swift; sourceTree = "<group>"; };
 		85AF5AE61EBC2ECCE01A46B8 /* fountain-d.caf */ = {isa = PBXFileReference; path = "fountain-d.caf"; sourceTree = "<group>"; };
@@ -93,6 +125,15 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		253FF0CA249E5B393FCDFC1C /* FathomWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				0DDF141B99062328D63E0A72 /* Info.plist */,
+				676572329D30F6241A343559 /* WakeLiveActivity.swift */,
+			);
+			path = FathomWidgets;
+			sourceTree = "<group>";
+		};
 		3489981FAA3B5B29411A733F /* Fathom */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				8ABEC91B120D4F6001235AE5 /* Fathom.app */,
+				7A69B350ACB04F6CB6FE9EDA /* FathomWidgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -177,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				3489981FAA3B5B29411A733F /* Fathom */,
+				253FF0CA249E5B393FCDFC1C /* FathomWidgets */,
 				49F25A6610FE3CC302EC82DF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -210,6 +253,7 @@
 			children = (
 				9EC1DA17EB705624A6BFA37B /* AlarmEngine.swift */,
 				54CDF54A22E74C0D1F15BD87 /* BackupChain.swift */,
+				47AFC2E49107CA3B1BC07BDE /* FathomMetadata.swift */,
 			);
 			path = Alarms;
 			sourceTree = "<group>";
@@ -227,16 +271,35 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		14BE864DEF8008110C596ECD /* FathomWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A52CFF108F6CF078C36DA7B /* Build configuration list for PBXNativeTarget "FathomWidgets" */;
+			buildPhases = (
+				558C8DDB59832A809AD5682D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FathomWidgets;
+			packageProductDependencies = (
+			);
+			productName = FathomWidgets;
+			productReference = 7A69B350ACB04F6CB6FE9EDA /* FathomWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		B217A4083BB788E448CC4535 /* Fathom */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 473022B3EB867CD3D4347D40 /* Build configuration list for PBXNativeTarget "Fathom" */;
 			buildPhases = (
 				9F450E3B4F9F0A8B25C33317 /* Sources */,
 				55E5048A2075C44C3D598EF8 /* Resources */,
+				459BEE6C9518723CED82AAB6 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				55F98651E339DABAE72DC7AB /* PBXTargetDependency */,
 			);
 			name = Fathom;
 			packageProductDependencies = (
@@ -254,6 +317,9 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					14BE864DEF8008110C596ECD = {
+						ProvisioningStyle = Automatic;
+					};
 					B217A4083BB788E448CC4535 = {
 						ProvisioningStyle = Automatic;
 					};
@@ -274,6 +340,7 @@
 			projectRoot = "";
 			targets = (
 				B217A4083BB788E448CC4535 /* Fathom */,
+				14BE864DEF8008110C596ECD /* FathomWidgets */,
 			);
 		};
 /* End PBXProject section */
@@ -313,6 +380,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		558C8DDB59832A809AD5682D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A0FF55CC25689B54AF30E51 /* FathomMetadata.swift in Sources */,
+				910B1621300C9C5DB9482171 /* WakeLiveActivity.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9F450E3B4F9F0A8B25C33317 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -322,6 +398,7 @@
 				CB27B5099AFA97BFDB287F0A /* AlarmStore.swift in Sources */,
 				F009967672880F60BF8D92D3 /* BackupChain.swift in Sources */,
 				70EF4FB835B04058A9FD97E4 /* FathomApp.swift in Sources */,
+				B8558494361309310D2A3B81 /* FathomMetadata.swift in Sources */,
 				5D5B8268953D47D257249999 /* Models.swift in Sources */,
 				F70BADE910120F0E39AA4B96 /* OceanScene.swift in Sources */,
 				766C77E7609EDBCF35A322ED /* Theme.swift in Sources */,
@@ -332,6 +409,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		55F98651E339DABAE72DC7AB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 14BE864DEF8008110C596ECD /* FathomWidgets */;
+			targetProxy = CFA9FACB285B08AA1076E49F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		136179C2F4213A53887E7564 /* Debug */ = {
@@ -476,6 +561,21 @@
 			};
 			name = Release;
 		};
+		B703EBED47BE3E466A050465 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = FathomWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.shanehaynes.fathom.widgets;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		E5D49AE37F0281AA80EA05A9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -493,6 +593,21 @@
 			};
 			name = Release;
 		};
+		F9232D287FCF76154C772F1C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = FathomWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.shanehaynes.fathom.widgets;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -501,6 +616,15 @@
 			buildConfigurations = (
 				9BB3C1FCA9EB4D9543D1C91F /* Debug */,
 				B102FD4DAC55EC780A08CE66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		3A52CFF108F6CF078C36DA7B /* Build configuration list for PBXNativeTarget "FathomWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F9232D287FCF76154C772F1C /* Debug */,
+				B703EBED47BE3E466A050465 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
