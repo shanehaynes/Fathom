@@ -10,6 +10,7 @@ settings:
     TARGETED_DEVICE_FAMILY: "1"
     INFOPLIST_KEY_UILaunchScreen_Generation: YES
     CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: G44GWSXFK2
 targets:
   Fathom:
     type: application
