@@ -25,7 +25,7 @@ struct TonightView: View {
                 HStack {
                     Text("Tonight").tagStyle()
                     Spacer()
-                    Button("Alarm") { showSettings = true }
+                    Button("Alarm") { openSettings() }
                         .font(.system(size: 12))
                         .foregroundStyle(Theme.textLow)
                 }
@@ -83,10 +83,26 @@ struct TonightView: View {
                     .ignoresSafeArea()
                     .allowsHitTesting(false)
             }
+
+            // Alarm slides in from the left on a rightward swipe and back out
+            // on a leftward one — the two screens share the one water.
+            if showSettings {
+                AlarmSettingsView(onDone: closeSettings)
+                    .transition(.move(edge: .leading))
+                    .zIndex(2)
+            }
         }
-        .fullScreenCover(isPresented: $showSettings) {
-            AlarmSettingsView()
-        }
+        // Swipe right pulls up Alarm (the finger's direction is the edge it
+        // enters from).
+        .gesture(
+            DragGesture(minimumDistance: 25).onEnded { v in
+                if v.translation.width > 60,
+                   abs(v.translation.width) > abs(v.translation.height),
+                   !showSettings {
+                    openSettings()
+                }
+            }
+        )
         .onAppear { updateCharging() }
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.batteryStateDidChangeNotification)) { _ in
             updateCharging()
@@ -108,6 +124,14 @@ struct TonightView: View {
             return "wake \(day) at \(alarm.timeText)"
         }
         return "wake at \(alarm.timeText)"
+    }
+
+    private func openSettings() {
+        withAnimation(.easeInOut(duration: 0.35)) { showSettings = true }
+    }
+
+    private func closeSettings() {
+        withAnimation(.easeInOut(duration: 0.35)) { showSettings = false }
     }
 
     private var chargingAndBedside: Bool {

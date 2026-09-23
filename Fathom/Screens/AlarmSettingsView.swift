@@ -7,7 +7,8 @@ import SwiftUI
 
 struct AlarmSettingsView: View {
     @Environment(AlarmStore.self) private var store
-    @Environment(\.dismiss) private var dismiss
+    /// Slides back out to Tonight (swipe left, or Done).
+    var onDone: () -> Void = {}
     @State private var showPicker = false
     @State private var previewing: String?
 
@@ -24,7 +25,7 @@ struct AlarmSettingsView: View {
                     HStack {
                         Text("Alarm").tagStyle()
                         Spacer()
-                        Button("Done") { dismiss() }
+                        Button("Done") { onDone() }
                             .font(.system(size: 13))
                             .foregroundStyle(Theme.warm)
                     }
@@ -163,6 +164,16 @@ struct AlarmSettingsView: View {
             }
         }
         .onDisappear { WakeAudio.shared.stop() }
+        // Swipe left slides back to Tonight. Simultaneous so the vertical
+        // ScrollView keeps its drags; only a horizontally-dominant swipe fires.
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 25).onEnded { v in
+                if v.translation.width < -60,
+                   abs(v.translation.width) > abs(v.translation.height) {
+                    onDone()
+                }
+            }
+        )
     }
 
     /// Editing an armed alarm cancels and reschedules its entire chain
