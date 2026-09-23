@@ -28,6 +28,7 @@
 		7552C880BA4DCDDE75CF88A5 /* dawn-a.caf in Resources */ = {isa = PBXBuildFile; fileRef = D593B81E81DAE72EDB7F261A /* dawn-a.caf */; };
 		766C77E7609EDBCF35A322ED /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FAFFBB08BE92D1C64D838 /* Theme.swift */; };
 		7D3501611FE1B5A074B0E865 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FAFFBB08BE92D1C64D838 /* Theme.swift */; };
+		7E354ACCE4D66513004556BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF2F32D0634162F1B5FDDBF5 /* Assets.xcassets */; };
 		8DE294D12F104FAADBC671B0 /* dawn-d.caf in Resources */ = {isa = PBXBuildFile; fileRef = FECB636142659848BD6D18B6 /* dawn-d.caf */; };
 		910B1621300C9C5DB9482171 /* WakeLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676572329D30F6241A343559 /* WakeLiveActivity.swift */; };
 		92924164E2305063A9134623 /* fountain-a.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8D3F55D641B62D3C28AA5AA7 /* fountain-a.caf */; };
@@ -117,6 +118,7 @@
 		E0112B8BFC4D1FB4B4EDE758 /* dawn-e.caf */ = {isa = PBXFileReference; path = "dawn-e.caf"; sourceTree = "<group>"; };
 		E5CA4883F8A4D22CA0869C72 /* fountain-preview.caf */ = {isa = PBXFileReference; path = "fountain-preview.caf"; sourceTree = "<group>"; };
 		EC3C6E1A40E573A61F7E81C8 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		EF2F32D0634162F1B5FDDBF5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FECB636142659848BD6D18B6 /* dawn-d.caf */ = {isa = PBXFileReference; path = "dawn-d.caf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -239,6 +241,7 @@
 		D7D02B5405443C110ABAA180 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				EF2F32D0634162F1B5FDDBF5 /* Assets.xcassets */,
 				4A2ACF1F77124005B806514C /* Sounds */,
 			);
 			path = Resources;
@@ -357,6 +360,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E354ACCE4D66513004556BC /* Assets.xcassets in Resources */,
 				7552C880BA4DCDDE75CF88A5 /* dawn-a.caf in Resources */,
 				B900FC9EBBBAC53A7855AF93 /* dawn-b.caf in Resources */,
 				26ED8708CDDCE2FE287BFAF2 /* dawn-c.caf in Resources */,
@@ -450,6 +454,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -481,6 +486,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G44GWSXFK2;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -501,6 +507,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				MARKETING_VERSION = 0.1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -517,6 +524,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -548,6 +556,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = G44GWSXFK2;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -562,6 +571,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				MARKETING_VERSION = 0.1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
