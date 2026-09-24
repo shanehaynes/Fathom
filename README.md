@@ -46,7 +46,7 @@ A persisted event log records each intent, dismissal and reschedule, so a night'
 
 - **The day after tomorrow depends on today's stop.** Each alarm is scheduled two mornings ahead, and the third is added when the alarm is stopped or the app is opened. If the stop intent fails and the app goes unopened for two mornings in a row, a repeating alarm runs out.
 - **AlarmKit's limit is unknown.** Two mornings of a repeating alarm are 62 AlarmKit alarms, and AlarmKit declares a `maximumLimitReached` error without saying where the limit is. Rebuilds schedule the soonest morning first, across all alarms, so if the limit is reached it cuts off the furthest morning. The event log records how many members each morning got.
-- **The backup chain is a stopgap.** A second chain of local notifications trails phase 1, each escalation step and three plateau checkpoints by 30 seconds, and fires whether or not AlarmKit did, until the alarm is dismissed. Nine per morning keeps it inside iOS's limit of 64 pending notifications per app. Unlike AlarmKit it obeys the silent switch, and it lacks the Time Sensitive entitlement that would let it through Sleep Focus.
+- **The backup chain is a stopgap.** A second chain of local notifications trails phase 1, each escalation step and three plateau checkpoints by 30 seconds, and fires whether or not AlarmKit did, until the alarm is dismissed. Nine per morning, two mornings per alarm, keeps up to three alarms inside iOS's limit of 64 pending notifications per app; past that, iOS silently drops the furthest. Unlike AlarmKit it obeys the silent switch. It now has the Time Sensitive entitlement, which should let it through Sleep Focus; that is not yet confirmed on device.
 
 ## Status by milestone
 

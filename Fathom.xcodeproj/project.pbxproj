@@ -99,6 +99,7 @@
 		85AF5AE61EBC2ECCE01A46B8 /* fountain-d.caf */ = {isa = PBXFileReference; path = "fountain-d.caf"; sourceTree = "<group>"; };
 		8ABEC91B120D4F6001235AE5 /* Fathom.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Fathom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D3F55D641B62D3C28AA5AA7 /* fountain-a.caf */ = {isa = PBXFileReference; path = "fountain-a.caf"; sourceTree = "<group>"; };
+		8E965773C35AFB229E0D6585 /* Fathom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Fathom.entitlements; sourceTree = "<group>"; };
 		916498081B0BD6927D88FED6 /* fountain-sleep.caf */ = {isa = PBXFileReference; path = "fountain-sleep.caf"; sourceTree = "<group>"; };
 		9440253E56B46752D70FAF03 /* fountain-phase1.caf */ = {isa = PBXFileReference; path = "fountain-phase1.caf"; sourceTree = "<group>"; };
 		990CDD997C896CE109B9080B /* dawn-sleep.m4a */ = {isa = PBXFileReference; path = "dawn-sleep.m4a"; sourceTree = "<group>"; };
@@ -143,6 +144,7 @@
 		3489981FAA3B5B29411A733F /* Fathom */ = {
 			isa = PBXGroup;
 			children = (
+				8E965773C35AFB229E0D6585 /* Fathom.entitlements */,
 				C1A3EB0D5F1C29053400797F /* Info.plist */,
 				DBF12A8A6F6812E03F76B35B /* Alarms */,
 				1AC4814A777B84C945D27EA2 /* App */,
@@ -437,6 +439,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Fathom/Fathom.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Fathom/Info.plist;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
@@ -602,6 +605,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Fathom/Fathom.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Fathom/Info.plist;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;

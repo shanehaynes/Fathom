@@ -7,10 +7,14 @@ import UserNotifications
 // +30 s from each AlarmKit fire, cancelled whenever the real alarm is
 // acknowledged. Remove only if milestone-1 testing proves it redundant.
 //
-// The pending-notification budget is 64 system-wide, so the backup covers
-// phase 1, the five chain fires, and three plateau checkpoints — not every
-// E-repeat. Nine requests per occurrence keeps two overlapping alarms inside
-// the budget.
+// iOS keeps at most 64 pending notifications per app — the 64 soonest — and
+// silently drops the rest. So the backup covers phase 1, the five chain fires,
+// and three plateau checkpoints, not every E-repeat: nine per occurrence, two
+// occurrences per alarm, keeps three alarms inside the budget. Past that, the
+// furthest mornings lose their backup first.
+//
+// .timeSensitive needs the Time Sensitive Notifications entitlement
+// (project.yml) to break through Focus.
 
 enum BackupChain {
     static let offset: TimeInterval = 30

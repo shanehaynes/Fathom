@@ -23,6 +23,12 @@ targets:
     dependencies:
       - target: FathomWidgets
         embed: true
+    entitlements:
+      path: Fathom/Fathom.entitlements
+      properties:
+        # BackupChain's notifications are .timeSensitive; without this, Focus
+        # holds them back like any other notification.
+        com.apple.developer.usernotifications.time-sensitive: true
     info:
       path: Fathom/Info.plist
       properties:
