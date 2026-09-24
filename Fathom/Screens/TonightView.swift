@@ -84,19 +84,19 @@ struct TonightView: View {
                     .allowsHitTesting(false)
             }
 
-            // Alarm slides in from the left on a rightward swipe and back out
-            // on a leftward one — the two screens share the one water.
+            // Alarm slides in from the right on a leftward swipe and back out
+            // on a rightward one — the two screens share the one water.
             if showSettings {
                 AlarmSettingsView(onDone: closeSettings)
-                    .transition(.move(edge: .leading))
+                    .transition(.move(edge: .trailing))
                     .zIndex(2)
             }
         }
-        // Swipe right pulls up Alarm (the finger's direction is the edge it
-        // enters from).
+        // Swipe left pulls up Alarm (the next page sits to the right, as in a
+        // pager).
         .gesture(
             DragGesture(minimumDistance: 25).onEnded { v in
-                if v.translation.width > 60,
+                if v.translation.width < -60,
                    abs(v.translation.width) > abs(v.translation.height),
                    !showSettings {
                     openSettings()
