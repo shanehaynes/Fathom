@@ -107,6 +107,18 @@ struct AlarmModel: Codable, Identifiable, Hashable, Sendable {
         }
         return best
     }
+
+    /// The next `count` phase-1 dates, soonest first. A one-shot alarm has at most one.
+    func nextFireDates(count: Int, after now: Date = Date(), calendar: Calendar = .current) -> [Date] {
+        var dates: [Date] = []
+        var from = now
+        while dates.count < (days.isEmpty ? 1 : count),
+              let d = nextFireDate(after: from, calendar: calendar) {
+            dates.append(d)
+            from = d
+        }
+        return dates
+    }
 }
 
 /// §3 state machine.

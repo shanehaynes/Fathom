@@ -25,11 +25,11 @@ The visual identity is one image. The screen is the surface of dark water seen f
 
 ## Engineering notes
 
-**One morning is 31 system alarms.** AlarmKit, Apple's alarm framework, schedules single alarms. Fathom needs a chain of them: phase 1, then five escalating 30-second sounds played back to back, then a plateau sound that repeats every 30 seconds up to a 15-minute cap. AlarmKit's repeating schedules only resolve to the minute, and the chain steps every 30 seconds. So each member is scheduled for an exact date, for the next morning only. Every chain is rebuilt whenever the app becomes active, except while an alarm is in progress, because a rebuild would cancel it. On device, AlarmKit accepted all 27 members of the chain's previous schedule; the current 31 are not yet confirmed.
+**One morning is 31 system alarms.** AlarmKit, Apple's alarm framework, schedules single alarms. Fathom needs a chain of them: phase 1, then five escalating 30-second sounds played back to back, then a plateau sound that repeats every 30 seconds up to a 15-minute cap. AlarmKit's repeating schedules only resolve to the minute, and the chain steps every 30 seconds. So each member is scheduled for an exact date, for the next two mornings. Every chain is rebuilt whenever the app becomes active, except while an alarm is in progress, because a rebuild would cancel it. On device, AlarmKit accepted all 27 members of the chain's previous schedule; the current 31 are not yet confirmed.
 
 **Every alarm is on record before it exists.** A rebuild takes 31 round trips to AlarmKit per morning, and iOS can suspend the app between any two. So each member's ID is saved before AlarmKit is asked to schedule it, and whatever a cut-short build left behind is still on record for "I'm up" to cancel. Each time the app becomes active, a reconciliation pass cancels any alarm or backup notification the app holds that no saved chain lists. It matches by alarm ID, because AlarmKit does not return an alarm's metadata.
 
-**Stop means "I'm up."** Because there is no snooze, the system alert's stop button carries a single intent that holds the parent alarm's ID. The engine uses it to cancel every remaining member of the chain, then schedules that alarm's next morning. Stopping during phase 1 or the gap means phase 2 never plays, and that is the improvement over the Loftie. Device testing confirmed that the intent reaches the app from the system alert.
+**Stop means "I'm up."** Because there is no snooze, the system alert's stop button carries a single intent that holds the parent alarm's ID. The engine uses it to cancel every remaining member of that morning's chain, then schedules whichever of the next two mornings is missing. Stopping during phase 1 or the gap means phase 2 never plays, and that is the improvement over the Loftie. Device testing confirmed that the intent reaches the app from the system alert.
 
 **The app never stores "ringing."** Where the wake stands (phase 1, gap, rising, plateau) is computed from the clock and the saved chain whenever the app becomes active. Relaunching mid-alarm, even after a force-quit, lands on the right screen, with the scene and audio positioned by the time elapsed since phase 2 began.
 
@@ -44,7 +44,8 @@ A persisted event log records each intent, dismissal and reschedule, so a night'
 
 ## Known risks
 
-- **Tomorrow depends on today's stop.** Each alarm is scheduled one morning ahead, and the next morning is scheduled when the alarm is stopped or the app is opened. If the stop intent fails and the app is never opened, a repeating alarm has nothing scheduled for the day after.
+- **The day after tomorrow depends on today's stop.** Each alarm is scheduled two mornings ahead, and the third is added when the alarm is stopped or the app is opened. If the stop intent fails and the app goes unopened for two mornings in a row, a repeating alarm runs out.
+- **AlarmKit's limit is unknown.** Two mornings of a repeating alarm are 62 AlarmKit alarms, and AlarmKit declares a `maximumLimitReached` error without saying where the limit is. Rebuilds schedule the soonest morning first, across all alarms, so if the limit is reached it cuts off the furthest morning. The event log records how many members each morning got.
 - **The backup chain is a stopgap.** A second chain of local notifications trails phase 1, each escalation step and three plateau checkpoints by 30 seconds, and fires whether or not AlarmKit did, until the alarm is dismissed. Nine per morning keeps it inside iOS's limit of 64 pending notifications per app. Unlike AlarmKit it obeys the silent switch, and it lacks the Time Sensitive entitlement that would let it through Sleep Focus.
 
 ## Status by milestone
