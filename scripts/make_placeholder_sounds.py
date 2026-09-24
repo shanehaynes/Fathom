@@ -8,8 +8,9 @@ Follows the §6 envelope rules that matter to the alarm layer:
 - chain A-E: 30 s each, escalating energy via added layers, not loudness tricks
 - E: seamless loop (every component has an integer number of cycles in 30 s)
 
-Outputs .caf (48 kHz, 16-bit) for the alarm/notification layer and .m4a for
-in-app continuous playback, into Fathom/Resources/Sounds/.
+Outputs .caf (48 kHz, 16-bit) for the alarm layer, trimmed -backup.caf copies
+of phase 1 and A-E for the notification backup chain, and .m4a for in-app
+continuous playback, into Fathom/Resources/Sounds/.
 """
 
 import math
@@ -21,6 +22,11 @@ import wave
 SR = 48000
 OUT = os.path.join(os.path.dirname(__file__), "..", "Fathom", "Resources", "Sounds")
 TMP = "/tmp/fathom-sounds"
+# iOS plays the default sound in place of any notification sound 30 s or
+# longer, so the backup chain (BackupChain.swift) gets trimmed copies. The
+# AlarmKit files stay exactly 30 s: the chain steps every 30 s, back to back,
+# and E must loop seamlessly.
+BACKUP_DURATION = 29.5
 
 
 def render(duration, layers, fade_in=0.0, fade_out=0.0, gain=0.5, drive=1.0):
@@ -51,6 +57,21 @@ def render(duration, layers, fade_in=0.0, fade_out=0.0, gain=0.5, drive=1.0):
             f *= (n - i) / fo
         out[i] *= scale * f
     return out
+
+
+def write_backup(samples, name):
+    """Notification-layer copy: cut to BACKUP_DURATION with a 0.25 s fade-out,
+    encoded IMA4 (a format notification sounds accept) to keep the bundle small."""
+    n = int(BACKUP_DURATION * SR)
+    fo = int(0.25 * SR)
+    out = samples[:n]
+    for i in range(n - fo, n):
+        out[i] *= (n - i) / fo
+    wav = f"{TMP}/{name}-backup.wav"
+    write_wav(wav, out)
+    subprocess.run(
+        ["afconvert", "-f", "caff", "-d", "ima4", wav,
+         os.path.join(OUT, f"{name}-backup.caf")], check=True)
 
 
 def mix(*parts):
@@ -135,6 +156,7 @@ def build_pair(pid, gentle_layers, chain_fn):
     p1 = render(30, gentle_layers, fade_in=3.5, fade_out=4, gain=0.50)
     write_wav(f"{TMP}/{pid}-phase1.wav", p1)
     convert(f"{TMP}/{pid}-phase1.wav", f"{pid}-phase1")
+    write_backup(p1, f"{pid}-phase1")
 
     for i, step in enumerate("abcde"):
         seamless = step == "e"
@@ -144,6 +166,7 @@ def build_pair(pid, gentle_layers, chain_fn):
                    gain=chain_gain[i], drive=chain_drive[i])
         write_wav(f"{TMP}/{pid}-{step}.wav", s)
         convert(f"{TMP}/{pid}-{step}.wav", f"{pid}-{step}")
+        write_backup(s, f"{pid}-{step}")
 
     cont = render(60, chain_fn(4), gain=0.95, drive=4.0)
     write_wav(f"{TMP}/{pid}-continuous.wav", cont)

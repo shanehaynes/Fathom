@@ -3,7 +3,7 @@ import UserNotifications
 
 // §3 edge-case table, last row: until AlarmKit reliability is proven across
 // every row of the matrix, a parallel UNUserNotificationCenter chain
-// (time-sensitive local notifications with 30 s custom sounds) runs offset
+// (time-sensitive local notifications with the custom sounds) runs offset
 // +30 s from each AlarmKit fire, cancelled whenever the real alarm is
 // acknowledged. Remove only if milestone-1 testing proves it redundant.
 //
@@ -54,7 +54,9 @@ enum BackupChain {
             let content = UNMutableNotificationContent()
             content.title = pair.name
             content.body = "Wake alarm"
-            content.sound = UNNotificationSound(named: UNNotificationSoundName("\(sound).caf"))
+            // iOS plays the default sound for any notification sound of 30 s
+            // or more; the -backup copies are trimmed to 29.5 s.
+            content.sound = UNNotificationSound(named: UNNotificationSoundName("\(sound)-backup.caf"))
             content.interruptionLevel = .timeSensitive
             content.userInfo = ["parentID": parentID.uuidString]
             let comps = Calendar.current.dateComponents(

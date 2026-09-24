@@ -76,7 +76,7 @@ scheduled ──T──▶ phase1_playing ──30s──▶ gap_waiting ──T
 | Phone restarted overnight | AlarmKit alarms persist across restart (verify milestone 1). If they don't: rescheduling on next app launch is not sufficient for a restart at 3am — this becomes a known limitation to document, mitigated by the backup chain if notifications survive restart. |
 | App force-quit | System alarms fire independently of app process (verify milestone 1). In-app continuous audio after tap simply starts on the tap. |
 | Low battery / Low Power Mode | Chain must still fire (verify). Bedside always-on mode requires charging (§4), so this mainly affects launchpad mode. |
-| Backup chain | Until AlarmKit reliability is proven across all rows above, schedule a parallel `UNUserNotificationCenter` chain (time-sensitive local notifications with 30 s custom sounds) offset +30 s from each AlarmKit fire, cancelled whenever the real alarm is acknowledged. Remove only if milestone-1 testing proves it redundant. |
+| Backup chain | Until AlarmKit reliability is proven across all rows above, schedule a parallel `UNUserNotificationCenter` chain (time-sensitive local notifications with the custom sounds, trimmed to 29.5 s — iOS plays the default for a notification sound of 30 s or more) offset +30 s from each AlarmKit fire, cancelled whenever the real alarm is acknowledged. Remove only if milestone-1 testing proves it redundant. |
 
 ## 4. Screens
 
@@ -183,7 +183,7 @@ Each 30 s. Fired back-to-back at +0:00 / +0:30 / +1:00 / +1:30 / +2:00 into phas
 ### Production
 
 - Compose in GarageBand/Logic on the Mac. Practical workflow: build the full plateau arrangement first, then create A–D by *removing* layers — guarantees shared DNA and consistent mixing.
-- Export: bundle sounds as `.caf` (48 kHz, 16-bit); in-app versions as AAC `.m4a`. Loudness-match all files per pair (target ≈ −16 LUFS for the chain, −22 LUFS for phase 1); the escalation should come from arrangement, not mastering tricks.
+- Export: bundle sounds as `.caf` (48 kHz, 16-bit); in-app versions as AAC `.m4a`; plus a `-backup.caf` copy of phase 1 and A–E cut to 29.5 s with a short fade, for the notification backup chain (§3). Loudness-match all files per pair (target ≈ −16 LUFS for the chain, −22 LUFS for phase 1); the escalation should come from arrangement, not mastering tricks.
 - Preview asset per pair: the 5 s + 5 s crossfade clip used by the Alarm screen.
 
 ## 7. Technical architecture
