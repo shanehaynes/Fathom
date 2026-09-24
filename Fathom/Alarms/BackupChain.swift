@@ -21,21 +21,32 @@ enum BackupChain {
         _ = try? await center.requestAuthorization(options: [.alert, .sound])
     }
 
-    static func schedule(parentID: UUID, phase1At: Date, phase2At: Date, pair: SoundPair) async -> [String] {
+    static let idPrefix = "fathom-backup-"
+
+    /// Roles in fire order: phase 1, the five chain fires, the plateau checkpoints.
+    static let roles: [String] = ["phase1"] + ChainTiming.offsets.map { $0.0.rawValue }
+        + plateauCheckpoints.indices.map { "checkpoint-\($0)" }
+
+    /// A pure function of the occurrence, so the engine can record the IDs
+    /// before anything is scheduled.
+    static func ids(occurrenceID: UUID) -> [String] {
+        roles.map { "\(idPrefix)\(occurrenceID.uuidString)-\($0)" }
+    }
+
+    static func schedule(occurrenceID: UUID, parentID: UUID, phase1At: Date, phase2At: Date, pair: SoundPair) async {
         let center = UNUserNotificationCenter.current()
-        var fires: [(String, Date, String)] = [
-            ("phase1", phase1At.addingTimeInterval(offset), pair.phase1File)
+        // Same order as `roles`.
+        var fires: [(Date, String)] = [
+            (phase1At.addingTimeInterval(offset), pair.phase1File)
         ]
         for (step, off) in ChainTiming.offsets {
-            fires.append((step.rawValue, phase2At.addingTimeInterval(off + offset), pair.chainFile(step)))
+            fires.append((phase2At.addingTimeInterval(off + offset), pair.chainFile(step)))
         }
-        for (i, off) in plateauCheckpoints.enumerated() {
-            fires.append(("checkpoint-\(i)", phase2At.addingTimeInterval(off + offset), pair.chainFile(.e)))
+        for off in plateauCheckpoints {
+            fires.append((phase2At.addingTimeInterval(off + offset), pair.chainFile(.e)))
         }
 
-        var ids: [String] = []
-        for (role, date, sound) in fires {
-            let id = "fathom-backup-\(parentID.uuidString)-\(role)"
+        for (id, (date, sound)) in zip(ids(occurrenceID: occurrenceID), fires) {
             let content = UNMutableNotificationContent()
             content.title = pair.name
             content.body = "Wake alarm"
@@ -47,9 +58,12 @@ enum BackupChain {
             let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
             let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
             try? await center.add(request)
-            ids.append(id)
         }
-        return ids
+    }
+
+    static func pendingIDs() async -> [String] {
+        await UNUserNotificationCenter.current().pendingNotificationRequests()
+            .map(\.identifier).filter { $0.hasPrefix(idPrefix) }
     }
 
     static func cancel(ids: [String]) {

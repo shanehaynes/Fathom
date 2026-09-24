@@ -15,13 +15,28 @@ import Observation
 
 /// One scheduled occurrence of an alarm: the parent model ID plus every
 /// system-alarm ID in its chain. Persisted so dismissal can cancel siblings
-/// across launches.
+/// across launches, and written ahead of AlarmKit: each member's ID is on
+/// record before the member is scheduled.
 struct ScheduledChain: Codable, Sendable {
+    var id: UUID
     var parentID: UUID
     var phase1At: Date
     var phase2At: Date
     var memberIDs: [UUID]
     var backupIDs: [String]
+}
+
+extension ScheduledChain {
+    // Chains persisted before occurrence IDs existed decode with a fresh one.
+    init(from decoder: any Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
+        parentID = try c.decode(UUID.self, forKey: .parentID)
+        phase1At = try c.decode(Date.self, forKey: .phase1At)
+        phase2At = try c.decode(Date.self, forKey: .phase2At)
+        memberIDs = try c.decode([UUID].self, forKey: .memberIDs)
+        backupIDs = try c.decode([String].self, forKey: .backupIDs)
+    }
 }
 
 @MainActor
@@ -36,6 +51,8 @@ final class AlarmEngine {
     }
 
     private let chainsKey = "fathom.chains"
+    /// Bumped by each rebuild; an older rebuild still in flight stops at its next step.
+    private var rebuild = 0
 
     private init() {
         if let data = UserDefaults.standard.data(forKey: chainsKey),
@@ -69,18 +86,44 @@ final class AlarmEngine {
 
     // MARK: - Scheduling
 
-    /// Cancels and reschedules every enabled alarm's entire chain atomically (§3).
+    /// Cancels and reschedules every enabled alarm's entire chain (§3). Every
+    /// member is on record before AlarmKit schedules it, so a rebuild that iOS
+    /// cuts short leaves no alarm "I'm up" can't cancel.
     func rescheduleAll(store: AlarmStore) async {
         guard await ensureAuthorized() else { EventLog.record("rescheduleAll: not authorized"); return }
+        rebuild += 1
+        let generation = rebuild
         EventLog.record("rescheduleAll: cancelling \(chains.count) chain(s), phase=\(phase)")
         for chain in chains.values {
             cancelChain(chain)
         }
-        chains = [:]
+        await reconcile()
         for alarm in store.alarms where alarm.isEnabled {
+            guard generation == rebuild else { return }   // a newer rebuild took over
             await schedule(alarm)
         }
         refreshPhase()
+    }
+
+    /// Cancels every AlarmKit alarm and backup notification that no persisted
+    /// chain records: leftovers from a build iOS cut short, or from before
+    /// chains were written ahead. AlarmKit doesn't expose an alarm's metadata,
+    /// so the match is by ID. Safe mid-wake, because a ringing chain's members
+    /// were all recorded before they were scheduled.
+    func reconcile() async {
+        let manager = AlarmManager.shared
+        let members = Set(chains.values.flatMap(\.memberIDs))
+        let orphans = ((try? manager.alarms) ?? []).map(\.id).filter { !members.contains($0) }
+        for id in orphans {
+            try? manager.cancel(id: id)
+        }
+        let pending = await BackupChain.pendingIDs()
+        let backups = Set(chains.values.flatMap(\.backupIDs))
+        let strays = pending.filter { !backups.contains($0) }
+        BackupChain.cancel(ids: strays)
+        if !orphans.isEmpty || !strays.isEmpty {
+            EventLog.record("reconcile: cancelled \(orphans.count) unrecorded alarm(s), \(strays.count) backup(s)")
+        }
     }
 
     private func schedule(_ alarm: AlarmModel) async {
@@ -98,10 +141,23 @@ final class AlarmEngine {
             fires.append(("e-repeat-\(i)", p2.addingTimeInterval(offset), alarm.pair.chainFile(.e)))
         }
 
-        var memberIDs: [UUID] = []
+        // Write-ahead: the record exists before AlarmKit hears of the chain, and
+        // each member's ID is recorded before it is scheduled. A dismissal or a
+        // newer rebuild can replace the record mid-build; the build then stops.
+        if let existing = chains[alarm.id] {
+            cancelChain(existing)
+        }
+        let occurrence = UUID()
+        chains[alarm.id] = ScheduledChain(
+            id: occurrence, parentID: alarm.id, phase1At: t, phase2At: p2,
+            memberIDs: [], backupIDs: []
+        )
+        var accepted = 0
         let manager = AlarmManager.shared
         for fire in fires {
+            guard chains[alarm.id]?.id == occurrence else { break }
             let id = UUID()
+            chains[alarm.id]?.memberIDs.append(id)
             let metadata = FathomMetadata(
                 parentID: alarm.id, role: fire.role, phase2Start: p2,
                 label: fire.role == "phase1" ? "\(alarm.pair.name) · gentle" : "\(alarm.pair.name) · phase two"
@@ -125,24 +181,34 @@ final class AlarmEngine {
             )
             do {
                 _ = try await manager.schedule(id: id, configuration: configuration)
-                memberIDs.append(id)
             } catch {
                 // AlarmKit repeat limits are spec-to-verify (milestone 1) — if the
                 // system rejects the plateau tail, keep what was accepted and log.
+                if chains[alarm.id]?.id == occurrence {
+                    chains[alarm.id]?.memberIDs.removeAll { $0 == id }
+                }
                 EventLog.record("schedule: rejected \(fire.role) at \(fire.date): \(error)")
                 break
             }
+            // Cancelled while AlarmKit was scheduling this member: the canceller
+            // couldn't reach it yet, so cancel it here.
+            guard chains[alarm.id]?.id == occurrence else {
+                try? manager.cancel(id: id)
+                break
+            }
+            accepted += 1
         }
 
-        EventLog.record("schedule: \(alarm.id.uuidString.prefix(8)) phase1=\(t) accepted \(memberIDs.count)/\(fires.count) members")
-        let backupIDs = await BackupChain.schedule(
-            parentID: alarm.id, phase1At: t, phase2At: p2, pair: alarm.pair
+        EventLog.record("schedule: \(alarm.id.uuidString.prefix(8)) phase1=\(t) accepted \(accepted)/\(fires.count) members")
+        guard chains[alarm.id]?.id == occurrence else { return }
+        let backupIDs = BackupChain.ids(occurrenceID: occurrence)
+        chains[alarm.id]?.backupIDs = backupIDs
+        await BackupChain.schedule(
+            occurrenceID: occurrence, parentID: alarm.id, phase1At: t, phase2At: p2, pair: alarm.pair
         )
-
-        chains[alarm.id] = ScheduledChain(
-            parentID: alarm.id, phase1At: t, phase2At: p2,
-            memberIDs: memberIDs, backupIDs: backupIDs
-        )
+        if chains[alarm.id]?.id != occurrence {
+            BackupChain.cancel(ids: backupIDs)
+        }
     }
 
     private func cancelChain(_ chain: ScheduledChain) {
@@ -151,6 +217,7 @@ final class AlarmEngine {
             try? manager.cancel(id: id)
         }
         BackupChain.cancel(ids: chain.backupIDs)
+        chains[chain.parentID] = nil
     }
 
     // MARK: - Dismissal
