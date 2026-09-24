@@ -30,6 +30,9 @@ targets:
         NSAlarmKitUsageDescription: Fathom schedules your two-phase wake alarms so they fire even when the app is closed.
         UIBackgroundModes: [audio]
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        # Deprecated on iOS 26 (build warning) yet still required by App Store
+        # validation (ITMS-90474) for portrait-only apps. The validator wins.
+        UIRequiresFullScreen: true
         UIUserInterfaceStyle: Dark
         ITSAppUsesNonExemptEncryption: false
         UILaunchScreen: {}
