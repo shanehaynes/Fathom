@@ -3,8 +3,9 @@ import AVFoundation
 
 // §7 wake handoff: engaging the system alarm foregrounds the app; AVAudioSession
 // (.playback) takes over with the continuous rendition at the correct ramp
-// position, computed from wall-clock time since phase-2 start. §3: the ramp is
-// a smoothstep — the plateau never gets louder; insistent, never punishing.
+// position, computed from wall-clock time since phase-2 start. §3: the climb is
+// linear over two minutes (A +0:00 → E +2:00), opening clearly audible, and the
+// plateau never gets louder — insistent, never punishing.
 
 @MainActor
 final class WakeAudio {
@@ -27,7 +28,7 @@ final class WakeAudio {
     }
 
     /// Continuous in-app rendition for the Wake screen, volume set to the §3
-    /// smoothstep ramp position and advanced every second until plateau.
+    /// linear ramp position and advanced every second until plateau.
     func startWake(pair: SoundPair, phase2Start: Date) {
         guard let url = url(for: pair.continuousFile) else { return }
         activateSession()
@@ -51,10 +52,11 @@ final class WakeAudio {
             player?.volume = 0
             return
         }
-        let ramp = smoothstep(min(m / 4, 1))
-        // Floor keeps phase-2 audio present from the first second; the climb is
-        // the arrangement's job as much as gain (§6).
-        player?.volume = Float(0.35 + 0.65 * ramp)
+        // Continuous is rendered at E energy; the chain's A sits ~3.7 dB below E
+        // and each 30 s step adds ~1 dB. Mirror that: open at A's level, climb
+        // evenly in dB to E at +2:00, then hold.
+        let ramp = min(m / 2, 1)
+        player?.volume = Float(pow(10, -3.7 * (1 - ramp) / 20))
     }
 
     /// Wind down (§4 Tonight): sleep sound with a fade-out timer. The practical
